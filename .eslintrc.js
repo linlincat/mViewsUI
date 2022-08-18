@@ -6,14 +6,18 @@ module.exports = {
     node: true,
     es6: true,
   },
-  extends: ['plugin:vue/essential', 'eslint:recommended', '@vue/typescript/recommended',
+  extends: ['plugin:vue/essential', 'eslint:recommended','plugin:vue/vue3-essential',
+  'eslint:recommended',
+  '@vue/typescript/recommended',
   '@vue/prettier',
   '@vue/prettier/@typescript-eslint',
   // 后面的配置会覆盖前面的配置 prettier覆盖eslint
   'plugin:prettier/recommended'],
   parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module',
+    ecmaVersion: 2020,
+    parser: "@typescript-eslint/parser",
+    // parser: 'babel-eslint',
+    // sourceType: 'module',
   },
   rules: {
     'no-console': 'off',
