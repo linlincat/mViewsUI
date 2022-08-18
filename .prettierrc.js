@@ -7,4 +7,6 @@ module.exports = {
   tabWidth: 2,
   semi: false,
   singleQuote: true,
+  // ESLint 默认规则是结尾不加逗号，Prettier 规则结尾要加逗号。
+  "trailingComma": "none"
 }

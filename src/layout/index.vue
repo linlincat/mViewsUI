@@ -6,7 +6,7 @@
         <!-- 选择项 -->
         <div class="slider">
           <!-- 图标 -->
-          <i class="iconfont icon-zhuangxiu"></i>
+          <i class="iconfont icon-zhuangxiu" />
           <!-- 文字提示 -->
           <span>装修</span>
         </div>
@@ -24,7 +24,7 @@
 
 <script>
 export default {
-  name: 'layout',
+  name: 'Layout',
 }
 </script>
 
