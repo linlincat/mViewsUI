@@ -7,6 +7,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "./",
   plugins: [vue(), vueJsx()],
   resolve: {
     alias: {
@@ -26,7 +27,7 @@ export default defineConfig({
   },
   // 本地运行配置，及反向代理配置
   server: {
-    hmr: true,
+    hmr: true, // 热更新
     open: true, //服务启动时自动在浏览器中打开应用
     port: 8080,
     cors: true, // 默认启用并允许任何源
