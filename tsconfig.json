@@ -1,0 +1,28 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": ["env.d.ts", "shim.d.ts", "src/**/*", "src/**/*.vue"],
+  "compilerOptions": {
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom"],
+    "skipLibCheck": true,// 跳过一些库的检测
+    "baseUrl": ".",// 文件路径在解析时，通常基于当前文件
+    "paths": {
+      "@/*": ["./src/*"]  // 编译阶段路径解析【@为别名src】
+    }
+  },
+
+  "references": [
+    {
+      "path": "./tsconfig.config.json"
+    }
+  ]
+}
