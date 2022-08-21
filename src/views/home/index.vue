@@ -18,20 +18,20 @@
         <el-button>查看JSON </el-button>
         <el-button>导入JSON </el-button>
         <el-button>导出JSON </el-button>
-        <input
+        <!-- <input
           type="file"
           ref="file"
           id="file"
           accept=".json"
           style="display: none"
-        />
+        /> -->
       </div>
     </section>
   </div>
 </template>
 <script setup lang="ts">
-// import utils from "utils/index"; // 方法类
-// import componentProperties from "@/utils/componentProperties"; // 组件数据
+import utils from "@/utils/index"; // 方法类
+import componentProperties from "@/utils/componentProperties"; // 组件数据
 // import FileSaver from "file-saver"; // 导出JSON
 // import { reactive, watch, toRefs, inject } from "vue";
 // import { ElMessageBox, ElMessage } from "element-plus";
