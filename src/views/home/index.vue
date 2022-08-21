@@ -27,15 +27,153 @@
         /> -->
       </div>
     </section>
+    <!-- 装修操作 -->
+    <section class="operation">
+      <!-- 组件 -->
+      <sliderassembly :pointer="choose.pointer" />
+
+      <!-- 手机 -->
+      <!-- <div class="phone">
+        <section class="phoneAll" ref="imageTofile" id="imageTofile">
+          <img src="@/assets/images/phoneTop.png" alt="" class="statusBar" /> -->
+
+      <!-- 头部导航 -->
+      <!-- <headerTop :pageSetup="pageSetup" @click="headTop" /> -->
+
+      <!-- 主体内容 -->
+      <!-- <section
+            class="phone-container"
+            :style="{
+              'background-color': pageSetup.bgColor,
+              backgroundImage: 'url(' + pageSetup.bgImg + ')',
+            }"
+            @drop="drop($event)"
+            @dragover="allowDrop($event)"
+            @dragleave="dragleaves($event)"
+          > -->
+      <!-- 动态组件 -->
+      <!-- <vuedraggable
+              :class="pointer.show ? 'pointer-events' : ''"
+              :list="pageComponents"
+              item-key="index"
+              :forceFallback="true"
+              :animation="200"
+            >
+              <template #item="{ element, index }">
+                <component
+                  :is="element.component"
+                  :datas="element.setStyle"
+                  :style="{
+                    border:
+                      element.active && deleShow ? '2px solid #155bd4' : '',
+                  }"
+                  @click="activeComponent(element, index)"
+                  class="componentsClass"
+                  :data-type="element.type"
+                >
+                  <template #deles>
+                    <div
+                      v-show="deleShow"
+                      class="deles"
+                      @click.stop="deleteObj(index)"
+                    > -->
+      <!-- 删除组件 -->
+      <!-- <span class="iconfont icon-sanjiaoxingzuo"></span>
+                      {{ element.text }}
+                      <van-icon name="delete" />
+                    </div>
+                  </template>
+                </component>
+              </template>
+            </vuedraggable> -->
+      <!-- </section> -->
+
+      <!-- 手机高度 -->
+      <!-- <div class="phoneSize">iPhone 8手机高度</div> -->
+
+      <!-- 底部 -->
+      <!-- <phoneBottom /> -->
+      <!-- </section> -->
+      <!-- 底部 -->
+      <!-- </div> -->
+
+      <!-- 页面设置tab -->
+      <!-- <div class="decorateTab">
+        <span
+          :class="rightcom === 'decorate' ? 'active' : ''"
+          @click="rightcom = 'decorate'"
+        >
+          <i class="iconfont icon-wangye" />
+          页面设置
+        </span>
+        <span
+          :class="rightcom === 'componenmanagement' ? 'active' : ''"
+          @click="rightcom = 'componenmanagement'"
+        >
+          <i class="iconfont icon-zujian" />
+          组件管理
+        </span>
+        <span
+          class="active"
+          v-show="rightcom != 'componenmanagement' && rightcom != 'decorate'"
+        >
+          <i class="iconfont icon-zujian" />
+          组件设置
+        </span>
+      </div> -->
+
+      <!-- 右侧工具栏 -->
+      <!-- <div class="decorateAll"> -->
+      <!-- 页面设置 -->
+      <!-- <transition name="decorateAnima"> -->
+      <!-- 动态组件 -->
+      <!-- <component
+            :is="rightcom"
+            :datas="currentproperties"
+            @componenmanagement="componenmanagement"
+          />
+        </transition> -->
+      <!-- </div> -->
+    </section>
   </div>
 </template>
 <script setup lang="ts">
 import utils from "@/utils/index"; // 方法类
 import componentProperties from "@/utils/componentProperties"; // 组件数据
 // import FileSaver from "file-saver"; // 导出JSON
-// import { reactive, watch, toRefs, inject } from "vue";
-// import { ElMessageBox, ElMessage } from "element-plus";
-// import vuedraggable from "vuedraggable"; //拖拽组件
+import { reactive, watch, toRefs, inject } from "vue";
+import { ElMessageBox, ElMessage } from "element-plus";
+import vuedraggable from "vuedraggable";
+
+// 是否显示预览
+const realTimeView = reactive({ show: false });
+
+// 页面数据
+const datas = reactive({
+  id: null, //当前页面id
+  pageSetup: {
+    // 页面设置属性
+    name: "页面标题", //页面名称
+    details: "", //页面描述
+    isPerson: false, // 是否显示个人中心
+    isBack: true, // 是否返回按钮
+    titleHeight: 35, // 高度
+    bgColor: "rgba(249, 249, 249, 10)", //背景颜色
+    bgImg: "", // 背景图片
+  },
+  pageComponents: [], //页面组件
+});
+
+// 选择组件数据
+const choose = reactive({
+  deleShow: true, //删除标签显示
+  index: "", //当前选中的index
+  rightcom: "decorate", //右侧组件切换
+  currentproperties: {}, //当前属性
+  offsetY: 0, //记录上一次距离父元素高度
+  onlyOne: ["1-5", "1-16"], // 只能存在一个的组件(组件的type)
+  pointer: { show: false }, //穿透
+});
 </script>
 <style lang="less" scoped>
 .pointer-events {
