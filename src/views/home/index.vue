@@ -29,6 +29,7 @@
     </section>
     <!-- 装修操作 -->
     <section class="operation">
+      事实上
       <!-- 组件 -->
       <sliderassembly :pointer="choose.pointer" />
 

@@ -16,5 +16,9 @@ module.exports = {
     "vue/multi-word-component-names": "off",
     "no-prototype-builtins": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    // props.pointer.show 提示pointer可能为空
+    "vue/no-mutating-props": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "no-debugger": "off",
   },
 };
