@@ -26,7 +26,7 @@ for (const path in requireComponent) {
   console.log(path, "key");
   app.component(
     currentKey,
-    defineAsyncComponent(() => import(path))
+    defineAsyncComponent(() => import(/* @vite-ignore */ path))
   );
 }
 

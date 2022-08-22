@@ -38,7 +38,7 @@
           <img src="@/assets/images/phoneTop.png" alt="" class="statusBar" />
 
           <!-- 头部导航 -->
-          <!-- <headerTop :pageSetup="pageSetup" @click="headTop" /> -->
+          <headerTop :pageSetup="datas.pageSetup" @click="headTop" />
 
           <!-- 主体内容 -->
           <!-- <section
@@ -98,41 +98,44 @@
       </div>
 
       <!-- 页面设置tab -->
-      <!-- <div class="decorateTab">
+      <div class="decorateTab">
         <span
-          :class="rightcom === 'decorate' ? 'active' : ''"
-          @click="rightcom = 'decorate'"
+          :class="choose.rightcom === 'decorate' ? 'active' : ''"
+          @click="choose.rightcom = 'decorate'"
         >
           <i class="iconfont icon-wangye" />
           页面设置
         </span>
         <span
-          :class="rightcom === 'componenmanagement' ? 'active' : ''"
-          @click="rightcom = 'componenmanagement'"
+          :class="choose.rightcom === 'componenmanagement' ? 'active' : ''"
+          @click="choose.rightcom = 'componenmanagement'"
         >
           <i class="iconfont icon-zujian" />
           组件管理
         </span>
         <span
           class="active"
-          v-show="rightcom != 'componenmanagement' && rightcom != 'decorate'"
+          v-show="
+            choose.rightcom != 'componenmanagement' &&
+            choose.rightcom != 'decorate'
+          "
         >
           <i class="iconfont icon-zujian" />
           组件设置
         </span>
-      </div> -->
+      </div>
 
       <!-- 右侧工具栏 -->
       <div class="decorateAll">
         <!-- 页面设置 -->
-        <!-- <transition name="decorateAnima"> -->
-        <!-- 动态组件 -->
-        <!-- <component
-            :is="rightcom"
-            :datas="currentproperties"
+        <transition name="decorateAnima">
+          <!-- 动态组件 -->
+          <component
+            :is="choose.rightcom"
+            :datas="choose.currentproperties"
             @componenmanagement="componenmanagement"
           />
-        </transition> -->
+        </transition>
       </div>
     </section>
   </div>
@@ -164,6 +167,15 @@ const datas = reactive({
   pageComponents: [], //页面组件
 });
 
+/**
+ * 切换组件位置  用于组件管理中删除功能
+ *
+ * @param {Object} res 组件切换后返回的位置
+ */
+const componenmanagement = (res: any) => {
+  datas.pageComponents = res;
+};
+
 // 选择组件数据
 const choose = reactive({
   deleShow: true, //删除标签显示
@@ -174,6 +186,16 @@ const choose = reactive({
   onlyOne: ["1-5", "1-16"], // 只能存在一个的组件(组件的type)
   pointer: { show: false }, //穿透
 });
+
+// 切换标题
+const headTop = () => {
+  choose.rightcom = "decorate";
+  /* 替换 */
+  datas.pageComponents.forEach((res: any) => {
+    /* 修改选中 */
+    if (res.active === true) res.active = false;
+  });
+};
 </script>
 <style lang="less" scoped>
 .pointer-events {

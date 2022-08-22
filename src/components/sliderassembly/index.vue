@@ -1,5 +1,6 @@
 <template>
   <div class="sliderassembly">
+    <!-- 当前激活展开-activeNames -->
     <el-collapse v-model="activeNames">
       <el-collapse-item
         :title="items.title"
@@ -11,7 +12,7 @@
           class="componList"
           draggable="true"
           @dragstart="drag($event)"
-          @dragend="dragends($event)"
+          @dragend="dragends"
           :data-name="item.name"
           v-for="(item, ind) in items.comList"
           :key="ind"
@@ -28,7 +29,7 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
 import type { PropType } from "vue";
-// import { type } from "os";
+
 type PointerProp = {
   show: boolean;
 };
@@ -38,7 +39,7 @@ const props = defineProps({
 });
 
 // 侧边栏组件显示
-const activeNames = reactive([1, 2, 3]);
+const activeNames = reactive([1, 2]);
 
 // 组件信息配置
 const datas = reactive([
@@ -53,7 +54,7 @@ const datas = reactive([
       },
       {
         text: "标题文本",
-        type: "1-3",
+        type: "1-2",
         icon: "icon-Component-biaotiwenzi",
         name: "captiontext",
       },
@@ -181,7 +182,10 @@ const drag = (event: any) => {
   if (props.pointer) {
     props.pointer.show = true;
   }
-  /* 传递参数 */
+  /* 传递参数
+   * dataTransfer.setData() 方法设置被拖数据的数据类型和值
+   * 通用组件主要功能为拖放组件的时候设置一个值
+   */
   event.dataTransfer.setData("componentName", event.target.dataset.name);
 };
 
@@ -190,9 +194,9 @@ const drag = (event: any) => {
  *
  * @param {Object} event event对象
  */
-const dragends = (event: DragEvent) => {
+const dragends = () => {
   /* 关闭穿透 */
-  console.log(event);
+  // console.log(event);
   props.pointer!.show = false;
 };
 </script>
