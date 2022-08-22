@@ -29,20 +29,19 @@
     </section>
     <!-- 装修操作 -->
     <section class="operation">
-      事实上
       <!-- 组件 -->
       <sliderassembly :pointer="choose.pointer" />
 
       <!-- 手机 -->
-      <!-- <div class="phone">
+      <div class="phone">
         <section class="phoneAll" ref="imageTofile" id="imageTofile">
-          <img src="@/assets/images/phoneTop.png" alt="" class="statusBar" /> -->
+          <img src="@/assets/images/phoneTop.png" alt="" class="statusBar" />
 
-      <!-- 头部导航 -->
-      <!-- <headerTop :pageSetup="pageSetup" @click="headTop" /> -->
+          <!-- 头部导航 -->
+          <!-- <headerTop :pageSetup="pageSetup" @click="headTop" /> -->
 
-      <!-- 主体内容 -->
-      <!-- <section
+          <!-- 主体内容 -->
+          <!-- <section
             class="phone-container"
             :style="{
               'background-color': pageSetup.bgColor,
@@ -52,8 +51,8 @@
             @dragover="allowDrop($event)"
             @dragleave="dragleaves($event)"
           > -->
-      <!-- 动态组件 -->
-      <!-- <vuedraggable
+          <!-- 动态组件 -->
+          <!-- <vuedraggable
               :class="pointer.show ? 'pointer-events' : ''"
               :list="pageComponents"
               item-key="index"
@@ -78,8 +77,8 @@
                       class="deles"
                       @click.stop="deleteObj(index)"
                     > -->
-      <!-- 删除组件 -->
-      <!-- <span class="iconfont icon-sanjiaoxingzuo"></span>
+          <!-- 删除组件 -->
+          <!-- <span class="iconfont icon-sanjiaoxingzuo"></span>
                       {{ element.text }}
                       <van-icon name="delete" />
                     </div>
@@ -87,16 +86,16 @@
                 </component>
               </template>
             </vuedraggable> -->
-      <!-- </section> -->
+          <!-- </section> -->
 
-      <!-- 手机高度 -->
-      <!-- <div class="phoneSize">iPhone 8手机高度</div> -->
+          <!-- 手机高度 -->
+          <div class="phoneSize">iPhone 8手机高度</div>
 
-      <!-- 底部 -->
-      <!-- <phoneBottom /> -->
-      <!-- </section> -->
-      <!-- 底部 -->
-      <!-- </div> -->
+          <!-- 底部 -->
+          <!-- <phoneBottom /> -->
+        </section>
+        <!-- 底部 -->
+      </div>
 
       <!-- 页面设置tab -->
       <!-- <div class="decorateTab">
@@ -124,17 +123,17 @@
       </div> -->
 
       <!-- 右侧工具栏 -->
-      <!-- <div class="decorateAll"> -->
-      <!-- 页面设置 -->
-      <!-- <transition name="decorateAnima"> -->
-      <!-- 动态组件 -->
-      <!-- <component
+      <div class="decorateAll">
+        <!-- 页面设置 -->
+        <!-- <transition name="decorateAnima"> -->
+        <!-- 动态组件 -->
+        <!-- <component
             :is="rightcom"
             :datas="currentproperties"
             @componenmanagement="componenmanagement"
           />
         </transition> -->
-      <!-- </div> -->
+      </div>
     </section>
   </div>
 </template>

@@ -1,6 +1,5 @@
 <template>
-  <div>lslslsl</div>
-  <!-- <div class="sliderassembly">
+  <div class="sliderassembly">
     <el-collapse v-model="activeNames">
       <el-collapse-item
         :title="items.title"
@@ -23,7 +22,7 @@
         </div>
       </el-collapse-item>
     </el-collapse>
-  </div> -->
+  </div>
 </template>
 
 <script lang="ts" setup>
