@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import type { PropType } from "vue";
-debugger;
+
 type PageSetupProp = {
   name: string;
   details: string;

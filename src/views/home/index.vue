@@ -41,20 +41,20 @@
           <headerTop :pageSetup="datas.pageSetup" @click="headTop" />
 
           <!-- 主体内容 -->
-          <!-- <section
+          <section
             class="phone-container"
             :style="{
-              'background-color': pageSetup.bgColor,
-              backgroundImage: 'url(' + pageSetup.bgImg + ')',
+              'background-color': datas.pageSetup.bgColor,
+              backgroundImage: 'url(' + datas.pageSetup.bgImg + ')',
             }"
             @drop="drop($event)"
             @dragover="allowDrop($event)"
-            @dragleave="dragleaves($event)"
-          > -->
-          <!-- 动态组件 -->
-          <!-- <vuedraggable
-              :class="pointer.show ? 'pointer-events' : ''"
-              :list="pageComponents"
+            @dragleave="dragleaves"
+          >
+            <!-- 动态组件 -->
+            <vuedraggable
+              :class="choose.pointer.show ? 'pointer-events' : ''"
+              :list="datas.pageComponents"
               item-key="index"
               :forceFallback="true"
               :animation="200"
@@ -65,7 +65,9 @@
                   :datas="element.setStyle"
                   :style="{
                     border:
-                      element.active && deleShow ? '2px solid #155bd4' : '',
+                      element.active && choose.deleShow
+                        ? '2px solid #155bd4'
+                        : '',
                   }"
                   @click="activeComponent(element, index)"
                   class="componentsClass"
@@ -73,21 +75,20 @@
                 >
                   <template #deles>
                     <div
-                      v-show="deleShow"
+                      v-show="choose.deleShow"
                       class="deles"
                       @click.stop="deleteObj(index)"
-                    > -->
-          <!-- 删除组件 -->
-          <!-- <span class="iconfont icon-sanjiaoxingzuo"></span>
+                    >
+                      <!-- 删除组件 -->
+                      <span class="iconfont icon-sanjiaoxingzuo"></span>
                       {{ element.text }}
                       <van-icon name="delete" />
                     </div>
                   </template>
                 </component>
               </template>
-            </vuedraggable> -->
-          <!-- </section> -->
-
+            </vuedraggable>
+          </section>
           <!-- 手机高度 -->
           <div class="phoneSize">iPhone 8手机高度</div>
 
@@ -148,11 +149,13 @@ import { reactive, watch, toRefs, inject } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import vuedraggable from "vuedraggable";
 
+type pageComponentProp = Record<string, any>;
+
 // 是否显示预览
 const realTimeView = reactive({ show: false });
 
 // 页面数据
-const datas = reactive({
+const datas: pageComponentProp = reactive({
   id: null, //当前页面id
   pageSetup: {
     // 页面设置属性
@@ -187,6 +190,28 @@ const choose = reactive({
   pointer: { show: false }, //穿透
 });
 
+/**
+ * 选择组件
+ *
+ * @param {Object} res 当前组件对象
+ */
+const activeComponent = (res: any, index: any) => {
+  choose.index = index;
+  /* 切换组件 */
+  choose.rightcom = res.style;
+  /* 丢样式 */
+  choose.currentproperties = res.setStyle;
+
+  /* 替换 */
+  datas.pageComponents.forEach((res: any) => {
+    /* 修改选中 */
+    if (res.active === true) res.active = false;
+  });
+
+  /* 选中样式 */
+  res.active = true;
+};
+
 // 切换标题
 const headTop = () => {
   choose.rightcom = "decorate";
@@ -195,6 +220,212 @@ const headTop = () => {
     /* 修改选中 */
     if (res.active === true) res.active = false;
   });
+};
+
+// 删除组件
+const deleteObj = (index: any) => {
+  datas.pageComponents.splice(index, 1);
+  if (choose.index === index) choose.rightcom = "decorate";
+  if (index < choose.index) choose.index = Number(choose.index) - 1 + "";
+};
+
+/**
+ * 当将元素或文本选择拖动到有效放置目标（每几百毫秒）上时，会触发此事件
+ *
+ * @param {Object} event event对象
+ */
+const allowDrop = (event: any) => {
+  //阻止浏览器的默认事件
+  event.preventDefault();
+
+  /* 获取鼠标高度 */
+  const eventoffset = event.offsetY;
+
+  /* 如果没有移动不触发事件减少损耗 */
+  if (choose.offsetY === eventoffset) return;
+  else choose.offsetY = eventoffset;
+
+  /* 获取组件 */
+  const childrenObject = event.target!.children[0];
+
+  // 一个以上的组件计算
+  if (datas.pageComponents.length) {
+    /* 如果只有一个组件并且第一个是提示组件直接返回 */
+    if (datas.pageComponents.length === 1 && datas.pageComponents[0].type === 0)
+      return;
+
+    /* 如果鼠标的高度小于第一个的一半直接放到第一个 */
+    if (eventoffset < childrenObject.children[0].clientHeight / 2) {
+      /* 如果第一个是提示组件直接返回 */
+      if (datas.pageComponents[0].type === 0) return;
+
+      /* 删除提示组件 */
+      datas.pageComponents = datas.pageComponents.filter(
+        (res: any) => res.component !== "placementarea"
+      );
+
+      /* 最后面添加提示组件 */
+      datas.pageComponents.unshift({
+        component: "placementarea",
+        type: 0,
+      });
+
+      return;
+    }
+
+    /* 记录距离父元素高度 */
+    const childOff = childrenObject.offsetTop;
+
+    /* 鼠标在所有组件下面 */
+    if (
+      eventoffset > childrenObject.clientHeight ||
+      childrenObject.lastChild.offsetTop -
+        childOff +
+        childrenObject.lastChild.clientHeight / 2 <
+        eventoffset
+    ) {
+      /* 最后一个组件是提示组件返回 */
+      if (datas.pageComponents[datas.pageComponents.length - 1].type === 0)
+        return;
+
+      /* 清除提示组件 */
+      datas.pageComponents = datas.pageComponents.filter(
+        (res: any) => res.component !== "placementarea"
+      );
+
+      /* 最后一个不是提示组件添加 */
+      datas.pageComponents.push({
+        component: "placementarea",
+        type: 0,
+      });
+
+      return;
+    }
+
+    const childrens = childrenObject.children;
+
+    /* 在两个组件中间，插入 */
+    for (let i = 0, l = childrens.length; i < l; i++) {
+      const childoffset = childrens[i].offsetTop - childOff;
+
+      if (childoffset + childrens[i].clientHeight / 2 > event.offsetY) {
+        /* 如果是提示组件直接返回 */
+        if (datas.pageComponents[i].type === 0) break;
+
+        if (datas.pageComponents[i - 1].type === 0) break;
+
+        /* 清除提示组件 */
+        datas.pageComponents = datas.pageComponents.filter(
+          (res: any) => res.component !== "placementarea"
+        );
+
+        datas.pageComponents.splice(i, 0, {
+          component: "placementarea",
+          type: 0,
+        });
+        break;
+      } else if (childoffset + childrens[i].clientHeight > event.offsetY) {
+        if (datas.pageComponents[i].type === 0) break;
+
+        if (
+          !datas.pageComponents[i + 1] ||
+          datas.pageComponents[i + 1].type === 0
+        )
+          break;
+
+        datas.pageComponents = datas.pageComponents.filter(
+          (res: any) => res.component !== "placementarea"
+        );
+
+        datas.pageComponents.splice(i, 0, {
+          component: "placementarea",
+          type: 0,
+        });
+
+        break;
+      }
+    }
+  } else {
+    /* 一个组件都没有直接push */
+    datas.pageComponents.push({
+      component: "placementarea",
+      type: 0,
+    });
+  }
+};
+
+/**
+ * 当在有效放置目标上放置元素或选择文本时触发此事件
+ *
+ * @param {Object} event event对象
+ */
+const drop = (event: DragEvent) => {
+  /* 获取数据 */
+  const data = utils.deepClone(
+    componentProperties.get(event.dataTransfer?.getData("componentName"))
+  );
+
+  /* 查询是否只能存在一个的组件且在第一个 */
+  const someOne = datas.pageComponents.some((item: any, index: number) => {
+    return (
+      item.component === "placementarea" &&
+      index === 0 &&
+      choose.onlyOne.includes(data.type)
+    );
+  });
+  if (someOne) {
+    ElMessage.info("固定位置的组件(如: 底部导航、悬浮)不能放在第一个!");
+    /* 删除提示组件 */
+    dragleaves();
+    return;
+  }
+
+  /* 查询是否只能存在一个的组件 */
+  const someResult = datas.pageComponents.some((item: any) => {
+    console.log(item.component, "--------------item.component");
+    return (
+      choose.onlyOne.includes(item.type) &&
+      item.component === event.dataTransfer?.getData("componentName")
+    );
+  });
+  if (someResult) {
+    ElMessage.info("当前组件只能添加一个!");
+    /* 删除提示组件 */
+    dragleaves();
+    return;
+  }
+
+  /* 替换 */
+  datas.pageComponents.forEach((res: any, index: number) => {
+    /* 修改选中 */
+    if (res.active === true) res.active = false;
+    /* 替换提示 */
+    choose.index = index + "";
+    if (res.component === "placementarea") datas.pageComponents[index] = data;
+  });
+
+  /* 切换组件 */
+  choose.rightcom = data.style;
+  /* 丢样式 */
+  choose.currentproperties = data.setStyle;
+
+  console.log(
+    data,
+    choose.rightcom,
+    choose.currentproperties,
+    "----------components data"
+  );
+};
+/**
+ * 当拖动的元素或文本选择离开有效的放置目标时，会触发此事件
+ *
+ * @param {Object} event event对象
+ */
+const dragleaves = () => {
+  /* 删除提示组件 */
+  datas.pageComponents = datas.pageComponents.filter(
+    (res: any) => res.component !== "placementarea"
+  );
 };
 </script>
 <style lang="less" scoped>
