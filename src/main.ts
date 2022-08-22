@@ -6,8 +6,6 @@ import router from "./router";
 
 const app = createApp(App);
 
-import Home from "./components/sliderassembly/index.vue";
-
 // 引入配置
 /* 引入elementUI */
 import ElementPlus from "element-plus";
@@ -15,29 +13,23 @@ import "element-plus/dist/index.css";
 
 import "vant/lib/index.css";
 import Vant from "vant";
-// const requireComponent = import.meta.glob("./components/**/*.vue");
 
+// import.meta.glob("./components/**/*.vue")
+// Vite 支持使用特殊的 import.meta.glob 函数从文件系统导入多个模块,匹配到的文件默认是懒加载的，通过动态导入实现
 const requireComponent = import.meta.glob("./components/**/*.vue");
-console.log("requireComponent:---", requireComponent);
-// let modules = {};
 const getCurrentKey = (path: string): string => {
-  return path;
+  const splitArrs = path.split("/");
+  return splitArrs[splitArrs.length - 2];
 };
 for (const path in requireComponent) {
   const currentKey = getCurrentKey(path);
   console.log(path, "key");
-  // app.component("sliderassembly", requireComponent[path]);
-  // app.component("sliderassembly", () => import(path));
   app.component(
-    "sliderassembly",
+    currentKey,
     defineAsyncComponent(() => import(path))
   );
-  // app.component("sliderassembly", requireComponent[path]);
-  // const moduleName = path.replace(/(.*\/)*([^.]+).*/gi, "$2");
-  // modules = { ...modules, ...requireComponent[path] };
 }
 
-// console.log(modules, "==== modules");
 import "@/permission";
 
 app.use(createPinia());

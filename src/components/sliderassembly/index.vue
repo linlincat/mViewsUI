@@ -38,10 +38,6 @@ const props = defineProps({
   pointer: Object as PropType<PointerProp>,
 });
 
-// eslint-disable-next-line no-debugger
-debugger;
-
-console.log(props);
 // 侧边栏组件显示
 const activeNames = reactive([1, 2, 3]);
 
