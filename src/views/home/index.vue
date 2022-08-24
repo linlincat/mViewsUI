@@ -60,32 +60,36 @@
               :animation="200"
             >
               <template #item="{ element, index }">
-                <component
-                  :is="element.component"
-                  :datas="element.setStyle"
-                  :style="{
-                    border:
-                      element.active && choose.deleShow
-                        ? '2px solid #155bd4'
-                        : '',
-                  }"
-                  @click="activeComponent(element, index)"
-                  class="componentsClass"
-                  :data-type="element.type"
-                >
-                  <template #deles>
-                    <div
-                      v-show="choose.deleShow"
-                      class="deles"
-                      @click.stop="deleteObj(index)"
-                    >
-                      <!-- 删除组件 -->
-                      <span class="iconfont icon-sanjiaoxingzuo"></span>
-                      {{ element.text }}
-                      <van-icon name="delete" />
-                    </div>
-                  </template>
-                </component>
+                <div>
+                  <!-- {{ element }} -->
+                  {{ element.active }}
+                  <component
+                    :is="element.component"
+                    :datas="element.setStyle"
+                    :style="{
+                      border:
+                        element.active && choose.deleShow
+                          ? '2px solid #155bd4'
+                          : '',
+                    }"
+                    @click="activeComponent(element, index)"
+                    class="componentsClass"
+                    :data-type="element.type"
+                  >
+                    <template #deles>
+                      <div
+                        v-show="choose.deleShow"
+                        class="deles"
+                        @click.stop="deleteObj(index)"
+                      >
+                        <!-- 删除组件 -->
+                        <span class="iconfont icon-sanjiaoxingzuo"></span>
+                        {{ element.text }}
+                        <van-icon name="delete" />
+                      </div>
+                    </template>
+                  </component>
+                </div>
               </template>
             </vuedraggable>
           </section>
@@ -212,7 +216,7 @@ const activeComponent = (res: any, index: any) => {
   res.active = true;
 };
 
-// 切换标题
+// 取消当前组件活动,跳到页面设置
 const headTop = () => {
   choose.rightcom = "decorate";
   /* 替换 */
@@ -360,12 +364,13 @@ const allowDrop = (event: any) => {
  * @param {Object} event event对象
  */
 const drop = (event: DragEvent) => {
-  /* 获取数据 */
+  /* 获取当前拖动组件的数据 */
   const data = utils.deepClone(
     componentProperties.get(event.dataTransfer?.getData("componentName"))
   );
 
   /* 查询是否只能存在一个的组件且在第一个 */
+  console.log(datas.pageComponents, "datas.pageComponents");
   const someOne = datas.pageComponents.some((item: any, index: number) => {
     return (
       item.component === "placementarea" &&
@@ -409,12 +414,9 @@ const drop = (event: DragEvent) => {
   /* 丢样式 */
   choose.currentproperties = data.setStyle;
 
-  console.log(
-    data,
-    choose.rightcom,
-    choose.currentproperties,
-    "----------components data"
-  );
+  console.log(data, "----------components data");
+  console.log(choose.rightcom, "----------choose.rightcom");
+  console.log(choose.currentproperties, "----------choose.currentproperties");
 };
 /**
  * 当拖动的元素或文本选择离开有效的放置目标时，会触发此事件
