@@ -131,6 +131,9 @@
 
       <!-- 右侧工具栏 -->
       <div class="decorateAll">
+        <!-- init-->
+        {{ choose.rightcom }}
+        <!-- {{ choose.currentproperties }} -->
         <!-- 页面设置 -->
         <transition name="decorateAnima">
           <!-- 动态组件 -->
@@ -186,7 +189,7 @@ const componenmanagement = (res: any) => {
 const choose = reactive({
   deleShow: true, //删除标签显示
   index: "", //当前选中的index
-  rightcom: "decorate", //右侧组件切换
+  rightcom: "decorate", //右侧组件切换[装饰]
   currentproperties: {}, //当前属性
   offsetY: 0, //记录上一次距离父元素高度
   onlyOne: ["1-5", "1-16"], // 只能存在一个的组件(组件的type)
@@ -200,7 +203,7 @@ const choose = reactive({
  */
 const activeComponent = (res: any, index: any) => {
   choose.index = index;
-  /* 切换组件 */
+  /* 切换组件 res.style eg."captiontextsstyle" */
   choose.rightcom = res.style;
   /* 丢样式 */
   choose.currentproperties = res.setStyle;
@@ -363,7 +366,7 @@ const allowDrop = (event: any) => {
  * @param {Object} event event对象
  */
 const drop = (event: DragEvent) => {
-  /* 获取当前拖动组件的数据 */
+  /* 获取并拷贝出一份当前拖动组件的数据 */
   const data = utils.deepClone(
     componentProperties.get(event.dataTransfer?.getData("componentName"))
   );
@@ -401,10 +404,12 @@ const drop = (event: DragEvent) => {
 
   /* 替换 */
   datas.pageComponents.forEach((res: any, index: number) => {
-    /* 修改选中 */
+    /* 修改切换当前操作选中状态 */
     if (res.active === true) res.active = false;
     /* 替换提示 */
     choose.index = index + "";
+    console.log(res.component, "res.component");
+    /* 用当前操作的组件替换显示placementarea组件 */
     if (res.component === "placementarea") datas.pageComponents[index] = data;
   });
 
@@ -413,9 +418,9 @@ const drop = (event: DragEvent) => {
   /* 丢样式 */
   choose.currentproperties = data.setStyle;
 
-  console.log(data, "----------components data");
-  console.log(choose.rightcom, "----------choose.rightcom");
-  console.log(choose.currentproperties, "----------choose.currentproperties");
+  console.log(data, "当前组件的数据");
+  console.log(choose.rightcom, "右侧配置组件");
+  console.log(choose.currentproperties, "组件的当前属性");
 };
 /**
  * 当拖动的元素或文本选择离开有效的放置目标时，会触发此事件
@@ -428,6 +433,28 @@ const dragleaves = () => {
     (res: any) => res.component !== "placementarea"
   );
 };
+// 监听右侧属性设置切换
+watch(
+  () => choose.rightcom,
+  (newval) => {
+    if (newval === "decorate") {
+      datas.pageComponents.forEach((res: any) => {
+        /* 修改选中 */
+        if (res.active === true) res.active = false;
+      });
+      choose.currentproperties = datas.pageSetup;
+      return;
+    }
+    if (newval === "componenmanagement") {
+      /* 替换 */
+      datas.pageComponents.forEach((res: any) => {
+        /* 修改选中 */
+        if (res.active === true) res.active = false;
+      });
+      choose.currentproperties = datas.pageComponents;
+    }
+  }
+);
 </script>
 <style lang="less" scoped>
 .pointer-events {
