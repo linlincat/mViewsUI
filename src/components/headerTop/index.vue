@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import type { PropType } from "vue";
 
-type PageSetupProp = {
+type HeaderTopProp = {
   name: string;
   details: string;
   isPerson: boolean;
@@ -40,7 +40,7 @@ type PageSetupProp = {
 };
 
 defineProps({
-  pageSetup: Object as PropType<PageSetupProp>,
+  pageSetup: Object as PropType<HeaderTopProp>,
 });
 </script>
 

@@ -1,9 +1,9 @@
 <template>
-  <div class="captiontext" :style="{ background: datas.backColor }">
+  <div class="captiontext" :style="{ background: datas?.backColor }">
     <div
       style="padding: 6px 0"
       :style="{
-        'border-bottom': datas.borderBott
+        'border-bottom': datas?.borderBott
           ? '1px solid #F9F9F9'
           : '1px solid #fff',
       }"
@@ -11,17 +11,17 @@
       <!-- 标题 -->
       <h2
         :style="{
-          'font-size': datas.wordSize + 'px',
-          'font-weight': datas.wordWeight,
-          color: datas.wordColor,
-          'text-align': datas.positions,
-          height: datas.wordHeight + 'px',
-          'line-height': datas.wordHeight + 'px',
-          'padding-right': !(datas.positions !== 'center' && datas.more.show)
+          'font-size': datas?.wordSize + 'px',
+          'font-weight': datas?.wordWeight,
+          color: datas?.wordColor,
+          'text-align': datas?.positions,
+          height: datas?.wordHeight + 'px',
+          'line-height': datas?.wordHeight + 'px',
+          'padding-right': !(datas?.positions !== 'center' && datas?.more.show)
             ? '0'
             : '60px',
         }"
-        v-if="datas.name"
+        v-if="datas?.name"
       >
         {{ datas.name }}
       </h2>
@@ -29,29 +29,29 @@
       <!-- 描述文字 -->
       <p
         :style="{
-          'font-size': datas.descriptionSize + 'px',
-          'font-weight': datas.descriptionWeight,
-          color: datas.descriptionColor,
-          'text-align': datas.positions,
+          'font-size': datas?.descriptionSize + 'px',
+          'font-weight': datas?.descriptionWeight,
+          color: datas?.descriptionColor,
+          'text-align': datas?.positions,
         }"
         style="margin-top: 8px"
-        v-if="datas.description"
+        v-if="datas?.description"
       >
-        {{ datas.description }}
+        {{ datas?.description }}
       </p>
 
       <!-- 更多 -->
       <p
         class="more"
-        v-show="datas.more.show"
-        :class="datas.positions !== 'center' ? 'lef' : ''"
+        v-show="datas?.more.show"
+        :class="datas?.positions !== 'center' ? 'lef' : ''"
         :style="{
-          color: datas.more.type === 0 ? '#38f' : '',
-          top: (datas.wordHeight - 6) / 2 + 'px',
+          color: datas?.more.type === 0 ? '#38f' : '',
+          top: (datas?.wordHeight - 6) / 2 + 'px',
         }"
       >
-        {{ datas.more.type === 2 ? '' : datas.more.text }}
-        <span> {{ datas.more.type === 0 ? '' : '>' }}</span>
+        {{ datas?.more.type === 2 ? "" : datas?.more.text }}
+        <span> {{ datas?.more.type === 0 ? "" : ">" }}</span>
       </p>
     </div>
 
@@ -60,13 +60,14 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'captiontext',
-  props: {
-    datas: Object,
-  },
-}
+<script setup lang="ts">
+import type { PropType } from "vue";
+
+type CaptionTextProp = Record<string, any>;
+
+defineProps({
+  datas: Object as PropType<Partial<CaptionTextProp>>,
+});
 </script>
 
 <style scoped lang="less">

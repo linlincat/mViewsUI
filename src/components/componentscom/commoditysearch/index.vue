@@ -2,29 +2,33 @@
   <div
     class="commoditysearch"
     :style="{
-      background: datas.backgroundColor,
-      border: `1px solid ${datas.backgroundColor}`,
+      background: datas?.backgroundColor,
+      border: `1px solid ${datas?.backgroundColor}`,
     }"
   >
     <!-- 搜索框 -->
     <section
       class="searchs"
       :style="{
-        height: datas.heights + 'px',
-        'justify-content': datas.textPosition === 0 ? 'left' : 'center',
-        background: datas.borderColor,
-        'border-radius': datas.borderRadius === 0 ? '0px' : '10px',
+        height: datas?.heights + 'px',
+        'justify-content': datas?.textPosition === 0 ? 'left' : 'center',
+        background: datas?.borderColor,
+        'border-radius': datas?.borderRadius === 0 ? '0px' : '10px',
       }"
     >
       <div class="search-left">
-        <van-icon name="search" size="16" :style="{ color: datas.textColor }" />
-        <span :style="{ color: datas.textColor }">搜索商品</span>
+        <van-icon
+          name="search"
+          size="16"
+          :style="{ color: datas?.textColor }"
+        />
+        <span :style="{ color: datas?.textColor }">搜索商品</span>
       </div>
       <!-- 扫一扫 -->
       <div
         class="sweep"
-        v-show="datas.sweep"
-        :style="{ color: datas.textColor }"
+        v-show="datas?.sweep"
+        :style="{ color: datas?.textColor }"
       >
         <span>扫一扫</span>
       </div>
@@ -35,13 +39,14 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'commoditysearch',
-  props: {
-    datas: Object,
-  },
-}
+<script setup lang="ts">
+import type { PropType } from "vue";
+
+type CommoditySearchProp = Record<string, any>;
+
+defineProps({
+  datas: Object as PropType<Partial<CommoditySearchProp>>,
+});
 </script>
 
 <style scoped lang="less">

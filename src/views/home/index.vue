@@ -1,8 +1,5 @@
 <template>
   <div class="home">
-    {{ aa }}
-    {{ bb }}
-    {{ cc }}
     <!-- 按钮集合 -->
     <section class="buttons">
       <p
