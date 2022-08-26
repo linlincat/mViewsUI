@@ -1,5 +1,8 @@
 <template>
   <div class="home">
+    {{ aa }}
+    {{ bb }}
+    {{ cc }}
     <!-- 按钮集合 -->
     <section class="buttons">
       <p
@@ -149,7 +152,7 @@
 import utils from "@/utils/index"; // 方法类
 import componentProperties from "@/utils/componentProperties"; // 组件数据
 // import FileSaver from "file-saver"; // 导出JSON
-import { reactive, watch, toRefs, inject } from "vue";
+import { reactive, ref, watch, toRefs, inject } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import vuedraggable from "vuedraggable";
 
