@@ -62,7 +62,6 @@
               <template #item="{ element, index }">
                 <div>
                   <!-- {{ element }} -->
-                  {{ element.active }}
                   <component
                     :is="element.component"
                     :datas="element.setStyle"
