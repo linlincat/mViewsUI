@@ -31,7 +31,7 @@
       <!-- 显示位置 -->
       <el-form-item label="显示位置">
         <div class="weiz">
-          <!-- <i
+          <i
             :class="datas?.positions === 'left' ? 'active' : ''"
             class="iconfont icon-horizontal-left"
             @click="datas!.positions = 'left'"
@@ -40,12 +40,12 @@
             :class="datas?.positions === 'center' ? 'active' : ''"
             class="iconfont icon-juzhong"
             @click="datas!.positions = 'center'"
-          /> -->
-          <!-- <i
-          :class="datas.positions === 'right' ? 'active': ''"
-          class="iconfont icon-juyou"
-          @click="datas.positions = 'right'"
-          /> -->
+          />
+          <i
+            :class="datas?.positions === 'right' ? 'active' : ''"
+            class="iconfont icon-juyou"
+            @click="datas!.positions = 'right'"
+          />
         </div>
       </el-form-item>
 
