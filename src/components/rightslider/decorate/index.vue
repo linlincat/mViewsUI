@@ -100,8 +100,6 @@ const props = defineProps({
   datas: Object as PropType<Partial<DecorateProp>>,
 });
 
-console.log(props.datas, "ddd");
-
 const refUpload = ref();
 
 const showUpload = (type: any) => {
@@ -136,7 +134,7 @@ const rules = reactive<FormRules>({
     { required: true, message: "请选择页面分类", trigger: "blur" },
   ],
 });
-const pickeShow = ref(false); //颜色选择器是否显示
+// const pickeShow = ref(false); //颜色选择器是否显示
 const predefineColors = reactive([
   // 颜色选择器预设
   "#ff4500",
