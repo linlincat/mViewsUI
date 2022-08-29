@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "shim.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": ["env.d.ts", "shim.d.ts", "src/**/*","public/**/*", "src/**/*.vue"],
   "compilerOptions": {
     "target": "esnext",
     "useDefineForClassFields": true,

@@ -133,6 +133,8 @@
       <div class="decorateAll">
         <!-- init-->
         {{ choose.rightcom }}
+        {{ choose.currentproperties }}
+        <!-- {{ datas.pageSetup }} -->
         <!-- {{ choose.currentproperties }} -->
         <!-- 页面设置 -->
         <transition name="decorateAnima">
@@ -475,6 +477,9 @@ watch(
       });
       choose.currentproperties = datas.pageComponents;
     }
+  },
+  {
+    immediate: true,
   }
 );
 </script>
