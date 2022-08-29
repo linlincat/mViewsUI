@@ -35,7 +35,7 @@
       <!-- 手机 -->
       <div class="phone">
         <section class="phoneAll" ref="imageTofile" id="imageTofile">
-          <img src="@/assets/images/phoneTop.png" alt="" class="statusBar" />
+          <!-- <img src="@/assets/images/phoneTop.png" alt="" class="statusBar" /> -->
 
           <!-- 头部导航 -->
           <headerTop :pageSetup="datas.pageSetup" @click="headTop" />
