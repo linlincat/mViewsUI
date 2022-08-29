@@ -15,7 +15,7 @@
       <div>
         <el-button @click="reloads" type="danger">重置</el-button>
         <el-button @click="isRealTimeView.show = true">预览</el-button>
-        <el-button>查看JSON </el-button>
+        <el-button @click="catJson">查看JSON </el-button>
         <el-button>导入JSON </el-button>
         <el-button>导出JSON </el-button>
         <input
@@ -57,7 +57,7 @@
               :list="datas.pageComponents"
               item-key="index"
               :forceFallback="true"
-              :animation="200"
+              :animation="100"
             >
               <template #item="{ element, index }">
                 <div>
@@ -187,6 +187,32 @@ const datas: pageComponentProp = reactive({
   },
   pageComponents: [], //页面组件
 });
+
+// 查看JSON
+const catJson = () => {
+  ElMessageBox.alert(
+    `{
+          <br/>
+          "id": ${datas.id},
+          <br/>
+          "name": "${datas.pageSetup.name}",
+          <br/>
+          "templateJson": '${JSON.stringify(datas.pageSetup)}',
+          <br/>
+          "component": '${JSON.stringify(datas.pageComponents)}',
+          <br/>
+        }`,
+    "查看JSON",
+    {
+      confirmButtonText: "确定",
+      customClass: "JSONView",
+      dangerouslyUseHTMLString: true,
+      callback: (e: any) => {
+        console.log(e);
+      },
+    }
+  );
+};
 
 /**
  * 切换组件位置  用于组件管理中删除功能
@@ -705,10 +731,10 @@ watch(
 
 /* 动画 */
 .decorateAnima-enter-active {
-  transition: all 1.5s ease;
+  transition: all 0.5s ease-in;
 }
 .decorateAnima-leave-active {
-  transition: all 1.5s ease;
+  transition: all 0.5s ease-out;
 }
 .decorateAnima-enter {
   transform: translate(8px, 8px);
