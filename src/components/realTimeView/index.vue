@@ -10,12 +10,6 @@
       <div v-if="datas!.show" class="screen">
         <template v-if="pageCon">
           <div v-for="(item, index) in pageCon" :key="index">
-            {{ item.component }}
-            <p>component</p>
-            {{ item.setStyle }}
-            <p>setStyle</p>
-            {{ item.type }}
-            <p>type</p>
             <component
               :is="item.component"
               :datas="item.setStyle"
@@ -29,15 +23,7 @@
           <div>没有内容</div>
         </template>
       </div>
-      <!-- <iframe
-        v-if="datas!.show"
-        ref="refFrame"
-        class="screen"
-        scrolling="false"
-        :src="'http://was666.gitee.io/as-editor-h5/#/?type=iframe'"
-        @load="load"
-      ></iframe> -->
-      <van-loading v-if="loading" size="24px" vertical>加载中</van-loading>
+      <!-- <van-loading v-if="loading" size="24px" vertical>加载中</van-loading> -->
     </el-dialog>
   </div>
 </template>
@@ -58,6 +44,16 @@ const props = defineProps({
   pageComponents: Object as PropType<RealTimeArrayProp>,
 });
 
+/* 因为数据结构导致数据变化页面没有变化
+let state = reactive({
+  data:[]
+})
+state.data= res.data
+/////////////////////////////////////////////////
+let data = ref([])
+//赋值
+data.value = res.data
+*/
 const pageCon: any = ref([]);
 watch(
   () => props.pageComponents,
@@ -69,26 +65,9 @@ watch(
 
 const emits = defineEmits(["toggleShow"]);
 // 关闭的时候让预览按钮恢复为false,实现显示触发预览效果
-// debugger;
 const handleCloseEvent = () => {
   emits("toggleShow", false);
 };
-// 是否在加载中
-const loading = ref(true);
-// const refFrame = ref();
-// debugger;
-// 加载完成事件
-// const load = () => {
-//   loading.value = false;
-//   console.log(props.val, "kdkdkdkdk");
-// debugger;
-//   const { proxy } = getCurrentInstance();
-// const _input = proxy.$refs['appidInput'];
-// console.log(_input)
-// const iframeEl = document.querySelector("frame") as any;
-
-// refFrame.value.postMessage(props.val, "http://was666.gitee.io");
-// };
 </script>
 
 <style lang="less" scoped>
