@@ -146,6 +146,7 @@
     </section>
     <realTimeView
       :datas="{ show: isRealTimeView.show }"
+      :pageComponents="JSON.stringify(datas.pageComponents)"
       :val="{
         id: datas.id,
         name: datas.pageSetup.name,
@@ -162,7 +163,7 @@ import utils from "@/utils/index"; // 方法类
 // import realTimeView from "@/components/realTimeView/index.vue";
 import componentProperties from "@/utils/componentProperties"; // 组件数据
 // import FileSaver from "file-saver"; // 导出JSON
-import { reactive, ref, watch, toRefs, inject } from "vue";
+import { reactive, watch, inject } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 import vuedraggable from "vuedraggable";
 
