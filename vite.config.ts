@@ -30,6 +30,7 @@ export default defineConfig({
     hmr: true, // 热更新
     open: true, //服务启动时自动在浏览器中打开应用
     port: 8080,
+    host: true, // 0.0.0.0
     cors: true, // 默认启用并允许任何源
     //反向代理配置，注意rewrite写法，开始没看文档在这里踩了坑
     proxy: {

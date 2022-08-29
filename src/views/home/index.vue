@@ -164,7 +164,7 @@ import utils from "@/utils/index"; // 方法类
 import componentProperties from "@/utils/componentProperties"; // 组件数据
 // import FileSaver from "file-saver"; // 导出JSON
 import { reactive, watch, inject } from "vue";
-import { ElMessageBox, ElMessage } from "element-plus";
+import { ElMessageBox, ElMessage, type Action } from "element-plus";
 import vuedraggable from "vuedraggable";
 
 type pageComponentProp = Record<string, any>;
@@ -207,8 +207,8 @@ const catJson = () => {
       confirmButtonText: "确定",
       customClass: "JSONView",
       dangerouslyUseHTMLString: true,
-      callback: (e: any) => {
-        console.log(e);
+      callback: (action: Action) => {
+        console.log(`action: ${action}`);
       },
     }
   );
@@ -453,6 +453,7 @@ const drop = (event: DragEvent) => {
     choose.index = index + "";
     console.log(res.component, "res.component");
     /* 用当前操作的组件替换显示placementarea组件 */
+
     if (res.component === "placementarea") datas.pageComponents[index] = data;
   });
 

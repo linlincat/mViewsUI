@@ -134,7 +134,7 @@ const uploadError = () => {
 };
 // 通过computed获得baseupload
 const baseupload = computed(() => {
-  return `${window.global_config.BASE_URL}upload/miniShop`;
+  return `${import.meta.env.VITE_APP_BASE_URL}upload/miniShop`;
 });
 
 // 通过computed获得disabl
