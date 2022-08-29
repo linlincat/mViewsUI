@@ -14,17 +14,17 @@
       </p>
       <div>
         <el-button @click="reloads" type="danger">重置</el-button>
-        <el-button>预览</el-button>
+        <el-button @click="isRealTimeView.show = true">预览</el-button>
         <el-button>查看JSON </el-button>
         <el-button>导入JSON </el-button>
         <el-button>导出JSON </el-button>
-        <!-- <input
+        <input
           type="file"
           ref="file"
           id="file"
           accept=".json"
           style="display: none"
-        /> -->
+        />
       </div>
     </section>
     <!-- 装修操作 -->
@@ -133,9 +133,6 @@
       <div class="decorateAll">
         <!-- init-->
         {{ choose.rightcom }}
-        {{ choose.currentproperties }}
-        <!-- {{ datas.pageSetup }} -->
-        <!-- {{ choose.currentproperties }} -->
         <!-- 页面设置 -->
         <transition name="decorateAnima">
           <!-- 动态组件 -->
@@ -147,10 +144,22 @@
         </transition>
       </div>
     </section>
+    <realTimeView
+      :datas="{ show: isRealTimeView.show }"
+      :val="{
+        id: datas.id,
+        name: datas.pageSetup.name,
+        templateJson: JSON.stringify(datas.pageSetup),
+        component: JSON.stringify(datas.pageComponents),
+      }"
+      @toggleShow="toggleShow"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import utils from "@/utils/index"; // 方法类
+// TS 中组件与变量名称不能重复
+// import realTimeView from "@/components/realTimeView/index.vue";
 import componentProperties from "@/utils/componentProperties"; // 组件数据
 // import FileSaver from "file-saver"; // 导出JSON
 import { reactive, ref, watch, toRefs, inject } from "vue";
@@ -160,7 +169,7 @@ import vuedraggable from "vuedraggable";
 type pageComponentProp = Record<string, any>;
 
 // 是否显示预览
-const realTimeView = reactive({ show: false });
+const isRealTimeView = reactive({ show: false });
 
 // 页面数据
 const datas: pageComponentProp = reactive({
@@ -197,6 +206,11 @@ const choose = reactive({
   onlyOne: ["1-5", "1-16"], // 只能存在一个的组件(组件的type)
   pointer: { show: false }, //穿透
 });
+
+const toggleShow = (res: boolean) => {
+  console.log(res, "toggleShow res");
+  isRealTimeView.show = res;
+};
 
 /**
  * 选择组件
