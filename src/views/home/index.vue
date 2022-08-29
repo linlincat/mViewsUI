@@ -13,7 +13,7 @@
         <!-- 返回 -->
       </p>
       <div>
-        <el-button type="danger">重置</el-button>
+        <el-button @click="reloads" type="danger">重置</el-button>
         <el-button>预览</el-button>
         <el-button>查看JSON </el-button>
         <el-button>导入JSON </el-button>
@@ -433,6 +433,28 @@ const dragleaves = () => {
     (res: any) => res.component !== "placementarea"
   );
 };
+
+// 刷新路由 <router-view v-if="isRouterAlive" />
+const reload = inject<() => void>("reload");
+// 重置
+const reloads = () => {
+  ElMessageBox.confirm(
+    "重置后您添加或者修改的数据将会失效, 是否继续?",
+    "提示",
+    {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    }
+  )
+    .then(() => {
+      reload?.();
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+};
+
 // 监听右侧属性设置切换
 watch(
   () => choose.rightcom,
