@@ -409,13 +409,13 @@ const allowDrop = (event: any) => {
  * @param {Object} event event对象
  */
 const drop = (event: DragEvent) => {
-  /* 获取并拷贝出一份当前拖动组件的数据 */
+  /* 获取并拷贝出一份当前拖动组件的数据
+  不可直接对props进行修改,所以备份一条数据 */
   const data = utils.deepClone(
     componentProperties.get(event.dataTransfer?.getData("componentName"))
   );
 
   /* 查询是否只能存在一个的组件且在第一个 */
-  console.log(datas.pageComponents, "datas.pageComponents");
   const someOne = datas.pageComponents.some((item: any, index: number) => {
     return (
       item.component === "placementarea" &&
@@ -432,7 +432,6 @@ const drop = (event: DragEvent) => {
 
   /* 查询是否只能存在一个的组件 */
   const someResult = datas.pageComponents.some((item: any) => {
-    console.log(item.component, "--------------item.component");
     return (
       choose.onlyOne.includes(item.type) &&
       item.component === event.dataTransfer?.getData("componentName")
@@ -451,9 +450,10 @@ const drop = (event: DragEvent) => {
     if (res.active === true) res.active = false;
     /* 替换提示 */
     choose.index = index + "";
-    console.log(res.component, "res.component");
-    /* 用当前操作的组件替换显示placementarea组件 */
-
+    /* 用当前操作的组件替换显示placementarea组件 
+    将data  赋值datas.pageComponents[index] 这样跟展示区用的是同一个对象数据
+    直接修改数据将会达到同步效果
+    */
     if (res.component === "placementarea") datas.pageComponents[index] = data;
   });
 
@@ -518,6 +518,8 @@ watch(
         if (res.active === true) res.active = false;
       });
       choose.currentproperties = datas.pageComponents;
+      // console.log(datas.pageComponents);
+      // debugger;
     }
   },
   {
