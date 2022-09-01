@@ -16,13 +16,14 @@
         <el-button @click="reloads" type="danger">重置</el-button>
         <el-button @click="isRealTimeView.show = true">预览</el-button>
         <el-button @click="catJson">查看JSON </el-button>
-        <el-button>导入JSON </el-button>
+        <el-button @click="handleImportJson">导入JSON </el-button>
         <el-button>导出JSON </el-button>
         <input
           type="file"
-          ref="file"
+          ref="refFile"
           id="file"
           accept=".json"
+          @change="importJSON"
           style="display: none"
         />
       </div>
@@ -163,11 +164,13 @@ import utils from "@/utils/index"; // 方法类
 // import realTimeView from "@/components/realTimeView/index.vue";
 import componentProperties from "@/utils/componentProperties"; // 组件数据
 // import FileSaver from "file-saver"; // 导出JSON
-import { reactive, watch, inject } from "vue";
+import { reactive, watch, inject, ref } from "vue";
 import { ElMessageBox, ElMessage, type Action } from "element-plus";
 import vuedraggable from "vuedraggable";
 
 type pageComponentProp = Record<string, any>;
+
+const refFile = ref<any>(null);
 
 // 是否显示预览
 const isRealTimeView = reactive({ show: false });
@@ -214,6 +217,31 @@ const catJson = () => {
   );
 };
 
+// 触发上传JSON事件
+const handleImportJson = () => {
+  refFile.value!.click();
+};
+
+// 导入json
+const importJSON = () => {
+  const fileObj: any = document.getElementById("file");
+  const file = fileObj.files[0];
+  const reader = new FileReader();
+  reader.readAsText(file);
+  const _this = datas;
+  console.log(file, "this is file");
+  reader.onload = function () {
+    console.log(this.result, "this.result");
+    // this.result为读取到的json字符串，需转成json对象
+    const ImportJSON = JSON.parse(this.result!.toString());
+    // 检测是否导入成功
+    console.log(ImportJSON, "-----------------导入成功");
+    // 导入JSON数据
+    _this.id = ImportJSON.id;
+    _this.pageSetup = JSON.parse(ImportJSON.templateJson);
+    _this.pageComponents = JSON.parse(ImportJSON.component);
+  };
+};
 /**
  * 切换组件位置  用于组件管理中删除功能
  *
