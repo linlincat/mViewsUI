@@ -59,7 +59,6 @@
 import { reactive, computed } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 const emits = defineEmits(["uploadInformation", "handleClose"]);
-// name: 'uploadImg',
 
 /* 报漏接口显示上传文件组件 */
 defineExpose({

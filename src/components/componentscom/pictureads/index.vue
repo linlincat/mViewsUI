@@ -80,9 +80,6 @@ import type { PropType } from "vue";
 // import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 import { Swiper } from "swiper/vue";
 import "swiper/css";
-// import "swiper/modules/navigation/navigation.min.css";
-// import "swiper/modules/pagination/pagination.min.css";
-// import "swiper/modules/scrollbar/scrollbar.min.css";
 type PrcProps = Record<string, any>;
 const props = defineProps({
   datas: Object as PropType<PrcProps>,

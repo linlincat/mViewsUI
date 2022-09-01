@@ -17,7 +17,7 @@
         <el-button @click="isRealTimeView.show = true">预览</el-button>
         <el-button @click="catJson">查看JSON </el-button>
         <el-button @click="handleImportJson">导入JSON </el-button>
-        <el-button>导出JSON </el-button>
+        <el-button @click="exportJSON">导出JSON </el-button>
         <input
           type="file"
           ref="refFile"
@@ -36,7 +36,7 @@
       <!-- 手机 -->
       <div class="phone">
         <section class="phoneAll" ref="imageTofile" id="imageTofile">
-          <!-- <img src="@/assets/images/phoneTop.png" alt="" class="statusBar" /> -->
+          <img src="@/assets/images/phoneTop.png" alt="" class="statusBar" />
 
           <!-- 头部导航 -->
           <headerTop :pageSetup="datas.pageSetup" @click="headTop" />
@@ -163,9 +163,9 @@ import utils from "@/utils/index"; // 方法类
 // TS 中组件与变量名称不能重复
 // import realTimeView from "@/components/realTimeView/index.vue";
 import componentProperties from "@/utils/componentProperties"; // 组件数据
-// import FileSaver from "file-saver"; // 导出JSON
 import { reactive, watch, inject, ref } from "vue";
 import { ElMessageBox, ElMessage, type Action } from "element-plus";
+import FileSaver from "file-saver"; //导出文件
 import vuedraggable from "vuedraggable";
 
 type pageComponentProp = Record<string, any>;
@@ -217,7 +217,20 @@ const catJson = () => {
   );
 };
 
-// 触发上传JSON事件
+// 导出json
+const exportJSON = () => {
+  // 将json转换成字符串
+  const data = JSON.stringify({
+    id: datas.id,
+    name: datas.pageSetup.name,
+    templateJson: JSON.stringify(datas.pageSetup),
+    component: JSON.stringify(datas.pageComponents),
+  });
+  const blob = new Blob([data], { type: "" });
+  FileSaver.saveAs(blob, `${datas.pageSetup.name}.json`);
+};
+
+// 触发导入JSON事件
 const handleImportJson = () => {
   refFile.value!.click();
 };
@@ -227,19 +240,17 @@ const importJSON = () => {
   const fileObj: any = document.getElementById("file");
   const file = fileObj.files[0];
   const reader = new FileReader();
+  // 开始读取指定的Blob中的内容。一旦完成，result属性中将包含一个字符串以表示所读取的文件内容。
   reader.readAsText(file);
-  const _this = datas;
-  console.log(file, "this is file");
+  // 该事件在读取操作完成时触发
   reader.onload = function () {
-    console.log(this.result, "this.result");
-    // this.result为读取到的json字符串，需转成json对象
+    /* this.result为读取到的json字符串，需转成json对象
+    this这个时候是 FileReader对象 */
     const ImportJSON = JSON.parse(this.result!.toString());
-    // 检测是否导入成功
-    console.log(ImportJSON, "-----------------导入成功");
     // 导入JSON数据
-    _this.id = ImportJSON.id;
-    _this.pageSetup = JSON.parse(ImportJSON.templateJson);
-    _this.pageComponents = JSON.parse(ImportJSON.component);
+    datas.id = ImportJSON.id;
+    datas.pageSetup = JSON.parse(ImportJSON.templateJson);
+    datas.pageComponents = JSON.parse(ImportJSON.component);
   };
 };
 /**
