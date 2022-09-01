@@ -267,6 +267,7 @@ componentProperties.set("custommodule", {
   setStyle: {
     text: "自定义模块",
     demo: "自定义内容",
+    type: "demo",
     img: "https://img2.baidu.com/it/u=1905875968,4289754134&fm=26&fmt=auto&gp=0.jpg",
   },
 });

@@ -130,6 +130,7 @@ const addSwiper = () => {
   nextTick(() => {
     if (props.datas?.swiperType !== 0 && props.datas?.imageList[0]) {
       if (mySwiper.value instanceof Array) {
+        // swiper.destroy(deleteInstance, cleanStyles) 销毁方法
         mySwiper.value.forEach((element: any) => {
           element.destroy();
         });
@@ -157,10 +158,8 @@ const addSwiper = () => {
         params.slidesPerView = 1.3;
         params.centeredSlides = true;
       }
-
+      // 初始化swiper
       mySwiper = new Swiper(".swiper-container", params);
-      console.log(mySwiper, "this is ");
-      debugger;
     } else {
       if (mySwiper.value instanceof Array) {
         mySwiper.value.forEach((element: any) => {

@@ -235,7 +235,7 @@ const choose = reactive({
 });
 
 const toggleShow = (res: boolean) => {
-  console.log(res, "toggleShow res");
+  // console.log(res, "toggleShow res");
   isRealTimeView.show = res;
 };
 
@@ -289,6 +289,7 @@ const allowDrop = (event: any) => {
 
   /* 获取鼠标高度 */
   const eventoffset = event.offsetY;
+  // console.log(eventoffset, "移入的间距");
 
   /* 如果没有移动不触发事件减少损耗 */
   if (choose.offsetY === eventoffset) return;
@@ -296,7 +297,7 @@ const allowDrop = (event: any) => {
 
   /* 获取组件 */
   const childrenObject = event.target!.children[0];
-
+  // console.log(childrenObject, "children - this");
   // 一个以上的组件计算
   if (datas.pageComponents.length) {
     /* 如果只有一个组件并且第一个是提示组件直接返回 */
@@ -305,15 +306,15 @@ const allowDrop = (event: any) => {
 
     /* 如果鼠标的高度小于第一个的一半直接放到第一个 */
     if (eventoffset < childrenObject.children[0].clientHeight / 2) {
-      /* 如果第一个是提示组件直接返回 */
+      /* 如果第一个是提示组件直接返回 - 这种情况下第一个组件不可能是一个提示组件*/
       if (datas.pageComponents[0].type === 0) return;
 
-      /* 删除提示组件 */
+      /* 删除提示组件  先删除掉之前释放内存同时也是去除页面操作过程中多页的DOM*/
       datas.pageComponents = datas.pageComponents.filter(
         (res: any) => res.component !== "placementarea"
       );
 
-      /* 最后面添加提示组件 */
+      /* 在最前面添加提示组件 */
       datas.pageComponents.unshift({
         component: "placementarea",
         type: 0,
@@ -323,7 +324,7 @@ const allowDrop = (event: any) => {
     }
 
     /* 记录距离父元素高度 */
-    const childOff = childrenObject.offsetTop;
+    const childOff = childrenObject.offsetTop; // 0
 
     /* 鼠标在所有组件下面 */
     if (
@@ -462,9 +463,9 @@ const drop = (event: DragEvent) => {
   /* 丢样式 */
   choose.currentproperties = data.setStyle;
 
-  console.log(data, "当前组件的数据");
-  console.log(choose.rightcom, "右侧配置组件");
-  console.log(choose.currentproperties, "组件的当前属性");
+  // console.log(data, "当前组件的数据");
+  // console.log(choose.rightcom, "右侧配置组件");
+  // console.log(choose.currentproperties, "组件的当前属性");
 };
 /**
  * 当拖动的元素或文本选择离开有效的放置目标时，会触发此事件

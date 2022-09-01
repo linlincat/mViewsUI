@@ -2,6 +2,11 @@
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": ["env.d.ts", "shim.d.ts", "src/**/*","public/**/*", "src/**/*.vue"],
   "compilerOptions": {
+    // 设置引入的定义文件
+    "types" : ["node", "jquery"],
+    // "typeAcquisition": {
+    //   "jquery": "@/types/jquery"
+    // },
     "target": "esnext",
     "useDefineForClassFields": true,
     "module": "esnext",

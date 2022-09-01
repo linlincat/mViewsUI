@@ -52,6 +52,7 @@ provide("reload", reload);
 
 .el-message-box.JSONView {
   width: 1100px !important;
+  max-width: 1100px !important;
 }
 
 .el-form-item__content {
