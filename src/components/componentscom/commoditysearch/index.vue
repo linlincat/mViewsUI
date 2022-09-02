@@ -39,13 +39,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { PropType } from "vue";
-
-type CommoditySearchProp = Record<string, any>;
-
+type ObjectProps = Record<string, any>;
 defineProps({
-  datas: Object as PropType<Partial<CommoditySearchProp>>,
+  datas: Object as PropType<Partial<ObjectProps>>,
 });
 </script>
 

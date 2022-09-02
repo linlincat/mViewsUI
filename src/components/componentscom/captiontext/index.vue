@@ -60,13 +60,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import type { PropType } from "vue";
-
-type CaptionTextProp = Record<string, any>;
-
+type ObjectProps = Record<string, any>;
 defineProps({
-  datas: Object as PropType<Partial<CaptionTextProp>>,
+  datas: Object as PropType<Partial<ObjectProps>>,
 });
 </script>
 
