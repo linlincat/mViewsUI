@@ -23,7 +23,7 @@ const getCurrentKey = (path: string): string => {
 };
 for (const path in requireComponent) {
   const currentKey = getCurrentKey(path);
-  console.log(path, "key");
+  // console.log(path, "key");
   app.component(
     currentKey,
     defineAsyncComponent(() => import(/* @vite-ignore */ path))
