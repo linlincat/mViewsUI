@@ -1,14 +1,14 @@
 <template>
   <div id="followStyle">
     <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <h2>{{ datas?.text }}</h2>
 
     <el-form>
       <el-form-item class="lef" label="公众号图片">
         <div class="follow-pic">
-          <img :src="datas.heade" alt="" />
+          <img :src="datas?.heade" alt="" />
           <el-button
-            @click="$refs.upload.showUpload()"
+            @click="refUpload.showUpload()"
             class="uploadImg"
             type="primary"
             plain
@@ -19,50 +19,38 @@
       </el-form-item>
 
       <el-form-item class="lef" label="公众号名称">
-        <el-input type="text" v-model="datas.followName" placeholder="请输入公众号名称" />
+        <el-input
+          type="text"
+          v-model="datas!.followName"
+          placeholder="请输入公众号名称"
+        />
       </el-form-item>
 
       <el-form-item class="lef" label="公众号Id">
-        <el-input type="text" v-model="datas.followAppId" placeholder="请输入公众号Id" />
+        <el-input
+          type="text"
+          v-model="datas!.followAppId"
+          placeholder="请输入公众号Id"
+        />
       </el-form-item>
     </el-form>
 
     <!-- 上传图片 -->
-    <uploadimg ref="upload" @uploadInformation="uploadInformation" />
+    <uploadimg ref="refUpload" @uploadInformation="uploadInformation" />
   </div>
 </template>
 
-<script>
-import uploadimg from '../../uploadImg' //图片上传
-export default {
-  name: 'followStyle',
-  props: {
-    datas: Object,
-  },
-  data() {
-    return {}
-  },
-
-  created() {
-    console.log(this.datas,'-------------followStyle datas')
-  },
-
-  mounted() {},
-
-  methods: {
-    // 提交
-    uploadInformation(res) {
-      this.datas.heade = res
-    },
-  },
-
-  computed: {},
-
-  watch: {},
-  components: {
-    uploadimg,
-  },
-}
+<script lang="ts" setup>
+import { ref, type PropType } from "vue";
+import uploadimg from "@/components/uploadImg/index.vue"; //图片上传
+type ObjectProp = Record<string, any>;
+const props = defineProps({
+  datas: Object as PropType<Partial<ObjectProp>>,
+});
+const refUpload = ref();
+const uploadInformation = (res: any) => {
+  props.datas!.heade = res;
+};
 </script>
 
 <style lang="less" scoped>

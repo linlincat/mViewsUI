@@ -1,17 +1,16 @@
 <template>
   <div class="crowdoperationstyle">
     <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <h2>{{ datas?.text }}</h2>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'crowdoperationstyle',
-  props: {
-    datas: Object,
-  },
-}
+<script setup lang="ts">
+import type { PropType } from "vue";
+type ObjectProp = Record<string, any>;
+defineProps({
+  datas: Object as PropType<Partial<ObjectProp>>,
+});
 </script>
 
 <style scoped lang="less">

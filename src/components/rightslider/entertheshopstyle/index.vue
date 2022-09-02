@@ -1,13 +1,13 @@
 <template>
   <div class="entertheshopstyle">
     <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <h2>{{ datas?.text }}</h2>
 
     <!-- 表单 -->
     <el-form
       label-position="top"
       label-width="80px"
-      :model="datas"
+      :model="datas!"
       :rules="rules"
       size="small"
     >
@@ -17,7 +17,7 @@
         prop="shopName"
       >
         <el-input
-          v-model="datas.shopName"
+          v-model="datas!.shopName"
           placeholder="请输入左侧标题"
           maxlength="10"
           show-word-limit
@@ -31,7 +31,7 @@
         prop="copywriting"
       >
         <el-input
-          v-model="datas.copywriting"
+          v-model="datas!.copywriting"
           placeholder="请输入右侧内容"
           maxlength="8"
           show-word-limit
@@ -39,15 +39,15 @@
       </el-form-item>
 
       <el-form-item label="左侧图标">
-        <img :src="datas.icon" v-if="datas.icon" />
+        <img :src="datas?.icon" v-if="datas?.icon" />
         <!-- 添加导航按钮 -->
         <el-button
-          @click="$refs.upload.showUpload()"
+          @click="refUpload.showUpload()"
           class="uploadImg"
           type="primary"
           plain
         >
-          点击{{datas.icon?'更换':'添加'}}图片
+          点击{{ datas?.icon ? "更换" : "添加" }}图片
         </el-button>
       </el-form-item>
 
@@ -56,7 +56,7 @@
         <div class="imgText">
           <el-select
             style="width: 60%"
-            v-model="datas.type"
+            v-model="datas!.type"
             placeholder="请选择跳转类型"
             size="small"
           >
@@ -74,7 +74,7 @@
             style="width: 100%"
             size="small"
             placeholder="请输入链接，输入前确保可以访问"
-            v-model="datas.http.externalLink"
+            v-model="datas!.http.externalLink"
           >
           </el-input>
         </div>
@@ -82,54 +82,43 @@
     </el-form>
 
     <!-- 上传图片 -->
-    <uploadimg ref="upload" @uploadInformation="uploadInformation" />
+    <uploadimg ref="refUpload" @uploadInformation="uploadInformation" />
   </div>
 </template>
 
-<script>
-import uploadimg from '../../uploadImg' //图片上传
-
-export default {
-  name: 'entertheshopstyle',
-  props: {
-    datas: Object,
+<script lang="ts" setup>
+import { reactive, ref, type PropType } from "vue";
+import uploadimg from "@/components/uploadImg/index.vue"; //图片上传
+type ObjectProp = Record<string, any>;
+const props = defineProps({
+  datas: Object as PropType<Partial<ObjectProp>>,
+});
+const refUpload = ref();
+// const emptyText = ref("");
+const rules = reactive({
+  //校验表单输入
+  shopName: [
+    //页面名称
+    { required: true, message: "请输入左侧标题", trigger: "blur" },
+  ],
+  copywriting: [
+    //页面描述
+  ],
+});
+// 选择跳转类型
+const optionsType = reactive([
+  {
+    type: "10",
+    name: "内部链接",
   },
-  data() {
-    return {
-      rules: {
-        //校验表单输入
-        shopName: [
-          //页面名称
-          { required: true, message: '请输入左侧标题', trigger: 'blur' },
-        ],
-        copywriting: [
-          //页面描述
-        ],
-      },
-      optionsType: [
-        {
-          type: '10',
-          name: '内部链接',
-        },
-        {
-          type: '11',
-          name: '外部链接',
-        },
-      ], // 选择跳转类型
-      emptyText: '',
-    }
+  {
+    type: "11",
+    name: "外部链接",
   },
-  methods: {
-    // 提交
-    uploadInformation(res) {
-      this.datas.icon = res
-      console.log(res)
-    },
-  },
-  components: {
-    uploadimg,
-  },
-}
+]);
+const uploadInformation = (res: any) => {
+  props.datas!.icon = res;
+};
 </script>
 
 <style scoped lang="less">
@@ -163,9 +152,9 @@ export default {
   .uploadImg {
     width: 345px;
     height: 40px;
-    margin-top:20px ;
+    margin-top: 20px;
   }
-  img{
+  img {
     display: block;
     margin: 0 auto;
     width: 56px;

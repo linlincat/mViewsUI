@@ -1,7 +1,7 @@
 <template>
   <div class="listswitchingstyle">
     <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <h2>{{ datas?.text }}</h2>
 
     <!-- 表单 -->
     <el-form label-width="80px" :model="datas" size="small" :rules="rules">
@@ -9,13 +9,13 @@
       <el-form-item
         class="lef"
         label="选择模板"
-        v-show="datas.commoditylisttype !== 2"
+        v-show="datas?.commoditylisttype !== 2"
       >
         <p style="color: #000">{{ styleText }}</p>
       </el-form-item>
 
       <!-- 商品样式选择 -->
-      <div class="commodityType" v-show="datas.commoditylisttype !== 2">
+      <div class="commodityType" v-show="datas?.commoditylisttype !== 2">
         <el-tooltip
           class="item"
           effect="dark"
@@ -28,20 +28,20 @@
             class="iconfont"
             style="font-size: 21px"
             :class="[
-              item.type === datas.commodityType ? 'active' : '',
+              item.type === datas?.commodityType ? 'active' : '',
               item.icon,
             ]"
-            @click="datas.commodityType = index"
+            @click="datas!.commodityType = index"
           />
         </el-tooltip>
       </div>
 
       <!-- 下划线 -->
-      <div class="bor" v-show="datas.commoditylisttype !== 2" />
+      <div class="bor" v-show="datas?.commoditylisttype !== 2" />
 
       <!-- 商品类型选择 -->
       <el-form-item label="商品类型" class="lef">
-        <el-radio-group v-model="datas.commoditylisttype">
+        <el-radio-group v-model="datas!.commoditylisttype">
           <el-radio :label="index - 1" v-for="index in 3" :key="index"
             >类型{{ index }}</el-radio
           >
@@ -52,10 +52,10 @@
       <el-form-item
         label="标签颜色"
         class="lef"
-        v-show="datas.commoditylisttype !== 0"
+        v-show="datas?.commoditylisttype !== 0"
       >
         <el-color-picker
-          v-model="datas.tabColor"
+          v-model="datas!.tabColor"
           show-alpha
           class="picke"
           :predefine="predefineColors"
@@ -63,16 +63,16 @@
         </el-color-picker>
       </el-form-item>
 
-      <div v-show="datas.commoditylisttype === 0">
+      <div v-show="datas?.commoditylisttype === 0">
         <h5 style="color: #000; font-size: 14px">添加商品</h5>
         <p style="color: #969799; font-size: 12px; margin-top: 10px">
           鼠标拖拽调整商品顺序
         </p>
 
         <!-- 图片广告 -->
-        <div v-if="datas.imageList[0]">
+        <div v-if="datas?.imageList[0]">
           <vuedraggable
-            :list="datas.imageList"
+            :list="datas?.imageList"
             item-key="index"
             :forceFallback="true"
             :animation="200"
@@ -124,7 +124,7 @@
         >
       </div>
 
-      <div v-show="datas.commoditylisttype !== 0">
+      <div v-show="datas?.commoditylisttype !== 0">
         <h5 style="color: #000; font-size: 14px; margin-left: 7px">
           添加商品分组<el-button
             style="padding: 2px 4px; margin-left: 200px"
@@ -149,7 +149,7 @@
 
         <!-- 分类名称 -->
         <section
-          v-for="(item, index) in datas.commoditylisttypetab"
+          v-for="(item, index) in datas?.commoditylisttypetab"
           :key="index"
         >
           <div class="bor" />
@@ -235,8 +235,8 @@
         <span
           v-for="(item, index) in moditystyles"
           :key="index"
-          :class="item.type == datas.moditystyle ? 'active' : ''"
-          @click="datas.moditystyle = index"
+          :class="item.type == datas?.moditystyle ? 'active' : ''"
+          @click="datas!.moditystyle = index"
         >
           {{ item.text }}
         </span>
@@ -248,14 +248,14 @@
       <el-form-item label="显示位置" class="lef">
         <div class="weiz">
           <i
-            :class="datas.positions === 'left' ? 'active' : ''"
+            :class="datas!.positions === 'left' ? 'active' : ''"
             class="iconfont icon-horizontal-left"
-            @click="datas.positions = 'left'"
+            @click="datas!.positions = 'left'"
           />
           <i
-            :class="datas.positions === 'center' ? 'active' : ''"
+            :class="datas?.positions === 'center' ? 'active' : ''"
             class="iconfont icon-juzhong"
-            @click="datas.positions = 'center'"
+            @click="datas!.positions = 'center'"
           />
         </div>
       </el-form-item>
@@ -271,7 +271,7 @@
       >
         <el-input
           type="number"
-          v-model.number="datas.textWeight"
+          v-model.number="datas!.textWeight"
           placeholder="请输入文本粗细"
         />
       </el-form-item>
@@ -281,7 +281,7 @@
       <!-- 图片倒角 -->
       <el-form-item label="图片倒角" class="lef borrediu">
         <el-slider
-          v-model="datas.borderRadius"
+          v-model="datas!.borderRadius"
           :max="30"
           input-size="small"
           show-input
@@ -294,7 +294,7 @@
       <!-- 页面边距 -->
       <el-form-item class="lef" label="页面边距">
         <el-slider
-          v-model="datas.pageMargin"
+          v-model="datas!.pageMargin"
           :max="20"
           input-size="small"
           show-input
@@ -307,7 +307,7 @@
       <!-- 商品间距 -->
       <el-form-item class="lef" label="商品间距">
         <el-slider
-          v-model="datas.commodityMargin"
+          v-model="datas!.commodityMargin"
           :max="20"
           input-size="small"
           show-input
@@ -319,7 +319,7 @@
 
       <el-form-item class="lef" label="背景图片">
         <div class="shop-head-pic" style="text-align: center">
-          <img class="home-bg" :src="datas.bgImg" alt="" v-if="datas.bgImg" />
+          <img class="home-bg" :src="datas?.bgImg" alt="" v-if="datas?.bgImg" />
           <div class="shop-head-pic-btn" style="text-align: center">
             <el-button
               @click="showUpload('0')"
@@ -337,10 +337,10 @@
       <div style="height: 10px" />
       <!--商品价格 -->
       <el-form-item class="lef" label="商品价格">
-        {{ datas.priceofcommodity ? '显示' : '隐藏' }}
+        {{ datas?.priceofcommodity ? "显示" : "隐藏" }}
         <el-checkbox
           style="margin-left: 196px"
-          v-model="datas.priceofcommodity"
+          v-model="datas!.priceofcommodity"
         />
       </el-form-item>
 
@@ -348,26 +348,26 @@
 
       <!--购买按钮 -->
       <el-form-item class="lef" label="购买按钮">
-        {{ datas.purchasebutton ? '显示' : '隐藏' }}
+        {{ datas?.purchasebutton ? "显示" : "隐藏" }}
         <el-checkbox
           style="margin-left: 196px"
-          v-model="datas.purchasebutton"
+          v-model="datas!.purchasebutton"
         />
       </el-form-item>
 
       <el-radio-group
-        v-model="datas.purchasebuttonType"
+        v-model="datas!.purchasebuttonType"
         class="radi1"
-        v-show="datas.purchasebutton"
+        v-show="datas?.purchasebutton"
       >
         <el-radio :label="index - 1" v-for="index in 8" :key="index"
           >样式{{ index }}</el-radio
         >
 
         <el-input
-          v-show="datas.purchasebuttonType > 3"
+          v-show="datas?.purchasebuttonType > 3"
           style="width: 40%; margin-top: 10px"
-          v-model="datas.purchase"
+          v-model="datas!.purchase"
           size="small"
         />
       </el-radio-group>
@@ -376,17 +376,17 @@
 
       <!--商品角标 -->
       <el-form-item class="lef" label="商品角标">
-        {{ datas.commoditycorner ? '显示' : '隐藏' }}
+        {{ datas?.commoditycorner ? "显示" : "隐藏" }}
         <el-checkbox
           style="margin-left: 196px"
-          v-model="datas.commoditycorner"
+          v-model="datas!.commoditycorner"
         />
       </el-form-item>
 
       <el-radio-group
-        v-model="datas.commoditycornertype"
+        v-model="datas!.commoditycornertype"
         class="radi1"
-        v-show="datas.commoditycorner"
+        v-show="datas?.commoditycorner"
       >
         <el-radio :label="index" v-for="(item, index) in marker" :key="index">{{
           item
@@ -395,7 +395,7 @@
 
       <el-form-item class="lef" label="颜色">
         <el-color-picker
-          v-model="datas.commodityTagColor"
+          v-model="datas!.commodityTagColor"
           show-alpha
           class="picke"
           :predefine="predefineColors"
@@ -404,7 +404,7 @@
       </el-form-item>
 
       <el-form-item class="lef" label="位置">
-        <el-radio-group v-model="datas.tagPosition" class="radi1">
+        <el-radio-group v-model="datas!.tagPosition" class="radi1">
           <el-radio
             :label="index"
             v-for="(item, index) in tagPosition"
@@ -421,191 +421,184 @@
       @uploadListInformation="uploadListInformation"
     />
     <!-- 上传图片 -->
-    <uploadimg ref="uploadImg" @uploadInformation="uploadInformation" />
+    <uploadimg ref="refUpload" @uploadInformation="uploadInformation" />
   </div>
 </template>
 
-<script>
-import uploadCommodity from '../../uploadCommodity' //图片上传
-import uploadimg from '../../uploadImg' //图片上传
-import vuedraggable from 'vuedraggable' //拖拽组件
-
-export default {
-  name: 'listswitchingstyle',
-  props: {
-    datas: Object,
+<script lang="ts" setup>
+import { ref, reactive, type PropType, computed } from "vue";
+import uploadCommodity from "@/components/uploadCommodity/index.vue"; //图片上传
+import uploadimg from "@/components/uploadImg/index.vue"; //图片上传
+import vuedraggable from "vuedraggable"; //拖拽组件
+type ObjectProp = Record<string, any>;
+const props = defineProps({
+  datas: Object as PropType<Partial<ObjectProp>>,
+});
+// const index1 = ref(0);
+const kon = (rule: any, value: any, callback: any) => {
+  if (value.length === 0) callback(new Error("请输入有效数字"));
+};
+// const selecttext = reactive(["文本", "下拉框", "单选", "多选"]);
+const moditystyles = reactive([
+  /* 商品样式 */
+  {
+    text: "无边白底",
+    type: 0,
   },
-  components: { vuedraggable, uploadCommodity, uploadimg },
-  data() {
-    let kon = (rule, value, callback) => {
-      if (value.length === 0) callback(new Error('请输入有效数字'))
-    }
-    return {
-      color1: '#07c160',
-      moditystyles: [
-        /* 商品样式 */
-        {
-          text: '无边白底',
-          type: 0,
-        },
-        {
-          text: '卡片投影',
-          type: 1,
-        },
-        {
-          text: '描边白底',
-          type: 2,
-        },
-        {
-          text: '无边透明底',
-          type: 3,
-        },
-      ],
-      commodityTypes: [
-        {
-          icon: 'icon-datumoshi',
-          type: 0,
-          content: '大图模式',
-        },
-        {
-          icon: 'icon-commodity-yihangliangge',
-          type: 1,
-          content: '一行两个',
-        },
-        {
-          icon: 'icon-yihangsange',
-          type: 2,
-          content: '一行三个',
-        },
-        {
-          icon: 'icon-commodity-xiangxiliebiao',
-          type: 3,
-          content: '详细列表',
-        },
-        {
-          icon: 'icon-icon_shangpintu_yidaliangxiao',
-          type: 4,
-          content: '一大两小',
-        },
-        {
-          icon: 'icon-xuanzemokuai-daohanghengxianghuadong',
-          type: 5,
-          content: '横向滑动',
-        },
-      ],
-      rules: {
-        textWeight: [{ required: true, validator: kon, trigger: 'blur' }],
-      },
-      marker: ['新品', '热卖', 'NEW', 'HOT'],
-      imgText: null, //当前选中的类型
-      imgNumber: null, //第几个数组
-      predefineColors: [
-        // 颜色选择器预设
-        '#ff4500',
-        '#ff8c00',
-        '#ffd700',
-        '#90ee90',
-        '#00ced1',
-        '#1e90ff',
-        '#c71585',
-        '#409EFF',
-        '#909399',
-        '#C0C4CC',
-        'rgba(255, 69, 0, 0.68)',
-        'rgb(255, 120, 0)',
-        'hsv(51, 100, 98)',
-        'hsva(120, 40, 94, 0.5)',
-        'hsl(181, 100%, 37%)',
-        'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577',
-      ],
-      options: [], // 更多跳转链接
-      moreName: null,
-      tagPosition: [
-        // 标记位置
-        '左上',
-        '左下',
-        '右上',
-        '右下',
-      ],
-      uploadImgDataType: null,
-    }
+  {
+    text: "卡片投影",
+    type: 1,
   },
-  created() {},
-  methods: {
-    /* 上传图片弹框 */
-    dialogVisibleshow(text, number) {
-      this.$refs.upload.showUpload()
-      this.imgText = text
-      this.number = number
-    },
-    /* 添加分组 */
-    addGrouping() {
-      this.datas.commoditylisttypetab.push({
-        text: '分组',
-        imageList: [],
-      })
-    },
-    // 提交
-    uploadListInformation(res) {
-      if (this.imgText === 'imageList') {
-        this.datas.imageList.push(res)
-      } else {
-        this.datas.commoditylisttypetab[this.number].imageList.push(res)
-      }
-
-      this.imgText = null
-      this.number = null
-    },
-
-    showUpload(type) {
-      this.uploadImgDataType = type
-      this.$refs.uploadImg.showUpload()
-    },
-
-    // 背景图
-    uploadInformation(res) {
-      console.log(res, '---------uploadImg')
-      if (this.uploadImgDataType === '0') {
-        this.datas.bgImg = res
-        console.log(this.datas.bgImg, '---------uploadImg')
-      }
-    },
-
-    // 清空背景图片
-    clear() {
-      this.datas.bgImg = ''
-    },
-
-    /* 删除图片 */
-    deleteimg(index) {
-      this.datas.imageList.splice(index, 1)
-    },
-
-    /* 删除分组里的图片 */
-    delecommodityimg(ind, index) {
-      this.datas.commoditylisttypetab[ind].imageList.splice(index, 1)
-    },
-
-    /* 删除分组 */
-    delecommoditylisttypetab(index) {
-      this.datas.commoditylisttypetab.splice(index, 1)
-    },
+  {
+    text: "描边白底",
+    type: 2,
   },
-  computed: {
-    styleText() {
-      let modeType
-      if (this.datas.commodityType === 0) modeType = '大图模式'
-      if (this.datas.commodityType === 1) modeType = '一行两个'
-      if (this.datas.commodityType === 2) modeType = '一行三个'
-      if (this.datas.commodityType === 3) modeType = '详细列表'
-      if (this.datas.commodityType === 4) modeType = '一大两小'
-      if (this.datas.commodityType === 5) modeType = '横向滑动'
-
-      return modeType
-    },
+  {
+    text: "无边透明底",
+    type: 3,
   },
-}
+]);
+const commodityTypes = reactive([
+  {
+    icon: "icon-datumoshi",
+    type: 0,
+    content: "大图模式",
+  },
+  {
+    icon: "icon-commodity-yihangliangge",
+    type: 1,
+    content: "一行两个",
+  },
+  {
+    icon: "icon-yihangsange",
+    type: 2,
+    content: "一行三个",
+  },
+  {
+    icon: "icon-commodity-xiangxiliebiao",
+    type: 3,
+    content: "详细列表",
+  },
+  {
+    icon: "icon-icon_shangpintu_yidaliangxiao",
+    type: 4,
+    content: "一大两小",
+  },
+  {
+    icon: "icon-xuanzemokuai-daohanghengxianghuadong",
+    type: 5,
+    content: "横向滑动",
+  },
+]);
+const rules = reactive({
+  textWeight: [{ required: true, validator: kon, trigger: "blur" }],
+});
+const marker = reactive(["新品", "热卖", "NEW", "HOT"]);
+const predefineColors = reactive([
+  // 颜色选择器预设
+  "#ff4500",
+  "#ff8c00",
+  "#ffd700",
+  "#90ee90",
+  "#00ced1",
+  "#1e90ff",
+  "#c71585",
+  "#409EFF",
+  "#909399",
+  "#C0C4CC",
+  "rgba(255, 69, 0, 0.68)",
+  "rgb(255, 120, 0)",
+  "hsv(51, 100, 98)",
+  "hsva(120, 40, 94, 0.5)",
+  "hsl(181, 100%, 37%)",
+  "hsla(209, 100%, 56%, 0.73)",
+  "#c7158577",
+]);
+
+// const options = reactive([]);
+const tagPosition = reactive([
+  // 标记位置
+  "左上",
+  "左下",
+  "右上",
+  "右下",
+]);
+const refUpload = ref();
+const upload = ref();
+// const color1 = ref("#07c160");
+const imgText = ref(null); //当前选中的类型
+// const imgNumber = ref(null); //第几个数组
+// const moreName = ref(null);
+const number = ref();
+const uploadImgDataType = ref(null); //第几个数组
+/* 上传图片弹框 */
+const dialogVisibleshow = (text: any, number: any) => {
+  upload.value.showUpload();
+  imgText.value = text;
+  number.value = number;
+};
+/* 添加分组 */
+const addGrouping = () => {
+  props.datas?.commoditylisttypetab.push({
+    text: "分组",
+    imageList: [],
+  });
+};
+// 提交
+const uploadListInformation = (res: any) => {
+  if (imgText.value === "imageList") {
+    props.datas?.imageList.push(res);
+  } else {
+    props.datas?.commoditylisttypetab[number.value].imageList.push(res);
+  }
+
+  imgText.value = null;
+  number.value = null;
+};
+
+const showUpload = (type: any) => {
+  uploadImgDataType.value = type;
+  refUpload.value.showUpload();
+};
+
+// 背景图
+const uploadInformation = (res: any) => {
+  if (uploadImgDataType.value === "0") {
+    props.datas!.bgImg = res;
+  }
+};
+
+// 清空背景图片
+const clear = () => {
+  props.datas!.bgImg = "";
+};
+
+/* 删除图片 */
+const deleteimg = (index: any) => {
+  props.datas?.imageList.splice(index, 1);
+};
+
+/* 删除分组里的图片 */
+const delecommodityimg = (ind: any, index: any) => {
+  props.datas?.commoditylisttypetab[ind].imageList.splice(index, 1);
+};
+
+/* 删除分组 */
+const delecommoditylisttypetab = (index: any) => {
+  props.datas?.commoditylisttypetab.splice(index, 1);
+};
+
+const styleText = computed(() => {
+  let modeType;
+  if (props.datas!.commodityType === 0) modeType = "大图模式";
+  if (props.datas!.commodityType === 1) modeType = "一行两个";
+  if (props.datas!.commodityType === 2) modeType = "一行三个";
+  if (props.datas!.commodityType === 3) modeType = "详细列表";
+  if (props.datas!.commodityType === 4) modeType = "一大两小";
+  if (props.datas!.commodityType === 5) modeType = "横向滑动";
+
+  return modeType;
+});
 </script>
 
 <style scoped lang="less">

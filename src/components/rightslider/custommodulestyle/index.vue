@@ -11,9 +11,9 @@
 
 <script lang="ts" setup>
 import type { PropType } from "vue";
-type CustomProp = Record<string, any>;
+type ObjectProp = Record<string, any>;
 defineProps({
-  datas: Object as PropType<Partial<CustomProp>>,
+  datas: Object as PropType<Partial<ObjectProp>>,
   dataType: String,
 });
 </script>

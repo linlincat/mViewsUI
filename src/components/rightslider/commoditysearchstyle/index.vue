@@ -190,9 +190,9 @@
 import { reactive } from "vue";
 import type { PropType } from "vue";
 import vuedraggable from "vuedraggable"; //拖拽组件
-type CaptionTextProp = Record<string, any>;
+type ObjectProp = Record<string, any>;
 const props = defineProps({
-  datas: Object as PropType<Partial<CaptionTextProp>>,
+  datas: Object as PropType<Partial<ObjectProp>>,
 });
 /* 添加热词 */
 const addHotords = () => {

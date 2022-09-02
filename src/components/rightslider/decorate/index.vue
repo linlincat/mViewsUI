@@ -94,10 +94,10 @@ import uploadimg from "@/components/uploadImg/index.vue"; //图片上传
 import type { PropType } from "vue";
 import type { FormRules } from "element-plus";
 
-type DecorateProp = Record<string, any>;
+type ObjectProp = Record<string, any>;
 
 const props = defineProps({
-  datas: Object as PropType<Partial<DecorateProp>>,
+  datas: Object as PropType<Partial<ObjectProp>>,
 });
 
 const refUpload = ref();

@@ -34,9 +34,9 @@
 import { reactive, watch } from "vue";
 import type { PropType } from "vue";
 import vuedraggable from "vuedraggable"; //拖拽组件
-type ComponentProps = Record<string, any>;
+type ObjectProps = Record<string, any>;
 const props = defineProps({
-  datas: Object as PropType<Partial<ComponentProps>>,
+  datas: Object as PropType<Partial<ObjectProps>>,
 });
 const emits = defineEmits(["componenmanagement"]);
 let data = reactive<any>(props.datas!);

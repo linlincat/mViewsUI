@@ -1,13 +1,13 @@
 <template>
   <div class="communitypowderstyle">
     <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <h2>{{ datas!.text }}</h2>
     <div style="height: 20px" />
     <!-- 表单 -->
     <el-form
       label-position="top"
       label-width="80px"
-      :model="datas"
+      :model="datas!"
       size="small"
       :rules="rules"
     >
@@ -18,11 +18,11 @@
         <div class="backgroundImg" @click="showImg('mainImg')">
           <img
             draggable="false"
-            v-if="!datas.mainImg"
+            v-if="!datas!.mainImg"
             src="../../../assets/images/powder.png"
             alt=""
           />
-          <img draggable="false" v-else :src="datas.mainImg" alt="" />
+          <img draggable="false" v-else :src="datas!.mainImg" alt="" />
           <p>更换图片</p>
         </div>
       </el-form-item>
@@ -30,8 +30,8 @@
       <!-- 二维码 -->
       <el-form-item label="二维码" :hide-required-asterisk="true">
         <div class="backgroundImg" @click="showImg('qrcodeImg')">
-          <i class="el-icon-plus" v-if="!datas.qrcodeImg" size="30">+</i>
-          <img draggable="false" v-else :src="datas.qrcodeImg" alt="" />
+          <i class="el-icon-plus" v-if="!datas!.qrcodeImg" size="30">+</i>
+          <img draggable="false" v-else :src="datas!.qrcodeImg" alt="" />
           <p>更换图片</p>
         </div>
       </el-form-item>
@@ -39,7 +39,7 @@
       <!-- 标题 -->
       <el-form-item label="标题" prop="title" :hide-required-asterisk="true">
         <el-input
-          v-model="datas.title"
+          v-model="datas!.title"
           placeholder="个人微信号, 群名称或活动标题"
           show-word-limit
         />
@@ -50,7 +50,7 @@
       <!-- 描述 -->
       <el-form-item label="描述" prop="describe" :hide-required-asterisk="true">
         <el-input
-          v-model="datas.describe"
+          v-model="datas!.describe"
           placeholder="请添加描述"
           show-word-limit
         />
@@ -65,7 +65,7 @@
         :hide-required-asterisk="true"
       >
         <el-input
-          v-model="datas.buttonName"
+          v-model="datas!.buttonName"
           placeholder="请输入按钮名称"
           show-word-limit
           maxlength="8"
@@ -78,7 +78,7 @@
       <el-form-item label="背景颜色" class="color-select">
         <!-- 颜色选择器 -->
         <el-color-picker
-          v-model="datas.backColor"
+          v-model="datas!.backColor"
           show-alpha
           class="picke"
           :predefine="predefineColors"
@@ -88,69 +88,62 @@
     </el-form>
 
     <!-- 上传图片 -->
-    <uploadimg ref="upload" @uploadInformation="uploadInformation" />
+    <uploadimg ref="refUpload" @uploadInformation="uploadInformation" />
   </div>
 </template>
+<script setup lang="ts">
+import { reactive, ref } from "vue";
+import type { PropType } from "vue";
+import uploadimg from "@/components/uploadImg/index.vue"; //图片上传
+type ObjectProp = Record<string, any>;
+const props = defineProps({
+  datas: Object as PropType<Partial<ObjectProp>>,
+});
+const imgText = ref("");
+const refUpload = ref();
+const rules = reactive({
+  title: [
+    //页面名称
+    { required: true, message: "请输入标题", trigger: "blur" },
+  ],
+  describe: [
+    // 描述
+    { required: true, message: "请输入描述", trigger: "blur" },
+  ],
+  buttonName: [
+    // 按钮名称
+    { required: true, message: "请输入按钮名称", trigger: "blur" },
+  ],
+});
+const predefineColors = reactive([
+  // 颜色选择器预设
+  "#ff4500",
+  "#ff8c00",
+  "#ffd700",
+  "#90ee90",
+  "#00ced1",
+  "#1e90ff",
+  "#c71585",
+  "#409EFF",
+  "#909399",
+  "#C0C4CC",
+  "rgba(255, 69, 0, 0.68)",
+  "rgb(255, 120, 0)",
+  "hsv(51, 100, 98)",
+  "hsva(120, 40, 94, 0.5)",
+  "hsl(181, 100%, 37%)",
+  "hsla(209, 100%, 56%, 0.73)",
+  "#c7158577",
+]);
 
-<script>
-import uploadimg from '../../uploadImg' //图片上传
-
-export default {
-  name: 'communitypowderstyle',
-  props: {
-    datas: Object,
-  },
-  data() {
-    return {
-      rules: {
-        title: [
-          //页面名称
-          { required: true, message: '请输入标题', trigger: 'blur' },
-        ],
-        describe: [
-          // 描述
-          { required: true, message: '请输入描述', trigger: 'blur' },
-        ],
-        buttonName: [
-          // 按钮名称
-          { required: true, message: '请输入按钮名称', trigger: 'blur' },
-        ],
-      },
-      predefineColors: [
-        // 颜色选择器预设
-        '#ff4500',
-        '#ff8c00',
-        '#ffd700',
-        '#90ee90',
-        '#00ced1',
-        '#1e90ff',
-        '#c71585',
-        '#409EFF',
-        '#909399',
-        '#C0C4CC',
-        'rgba(255, 69, 0, 0.68)',
-        'rgb(255, 120, 0)',
-        'hsv(51, 100, 98)',
-        'hsva(120, 40, 94, 0.5)',
-        'hsl(181, 100%, 37%)',
-        'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577',
-      ],
-      imgText: '', //哪一个图片
-    }
-  },
-  methods: {
-    // 提交
-    uploadInformation(res) {
-      this.datas[this.imgText] = res
-    },
-    showImg(res) {
-      this.imgText = res
-      this.$refs.upload.showUpload()
-    },
-  },
-  components: { uploadimg },
-}
+// 提交
+const uploadInformation = (res: any) => {
+  props.datas![imgText.value] = res;
+};
+const showImg = (res: any) => {
+  imgText.value = res;
+  refUpload.value.showUpload();
+};
 </script>
 
 <style scoped lang="less">

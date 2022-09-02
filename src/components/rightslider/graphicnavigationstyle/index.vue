@@ -1,7 +1,7 @@
 <template>
   <div class="graphicnavigationstyle">
     <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <h2>{{ datas?.text }}</h2>
 
     <!-- 提示 -->
     <p style="color: #969799; font-size: 12px; margin-top: 10px">
@@ -9,13 +9,20 @@
     </p>
 
     <!-- 图片广告 -->
-    <div v-if="datas.imageList[0]">
-      <vuedraggable :list="datas.imageList" item-key="index" :forceFallback="true" :animation="200">
-         <template #item="{ element }">
-          <section
-            class="imgList"
-          >
-            <van-icon class="el-icon-circle-close" name="close" @click="deleteimg(index)" />
+    <div v-if="datas?.imageList[0]">
+      <vuedraggable
+        :list="datas?.imageList"
+        item-key="index"
+        :forceFallback="true"
+        :animation="200"
+      >
+        <template #item="{ element, index }">
+          <section class="imgList">
+            <van-icon
+              class="el-icon-circle-close"
+              name="close"
+              @click="deleteimg(index)"
+            />
             <!-- 图片 -->
             <div class="imag">
               <img draggable="false" :src="element.src" alt="" />
@@ -54,8 +61,8 @@
                 </el-input>
               </div>
             </div>
-          </section>
-        </template>>
+          </section> </template
+        >>
       </vuedraggable>
     </div>
 
@@ -70,13 +77,13 @@
     <el-form label-width="80px" :model="datas" size="small">
       <!-- 商品类型选择 -->
       <el-form-item class="lef" label="商品类型">
-        <el-radio-group v-model="datas.navigationType">
+        <el-radio-group v-model="datas!.navigationType">
           <el-radio
             style="margin-left: 35px"
             :label="index - 1"
             v-for="index in 2"
             :key="index"
-            >{{ index === 1 ? '图片导航' : '文字导航' }}</el-radio
+            >{{ index === 1 ? "图片导航" : "文字导航" }}</el-radio
           >
         </el-radio-group>
       </el-form-item>
@@ -97,9 +104,9 @@
               class="iconfont"
               :class="[
                 index - 1 === 0 ? 'icon-guding' : 'icon-hengxianghuadong',
-                datas.imgStyle === index - 1 ? 'active' : '',
+                datas?.imgStyle === index - 1 ? 'active' : '',
               ]"
-              @click="datas.imgStyle = index - 1"
+              @click="datas!.imgStyle = index - 1"
             />
           </el-tooltip>
         </div>
@@ -108,9 +115,9 @@
       <div style="height: 10px" />
 
       <!-- 一屏显示 -->
-      <el-form-item class="lef" label="一屏显示" v-show="datas.imgStyle === 1">
+      <el-form-item class="lef" label="一屏显示" v-show="datas!.imgStyle === 1">
         <el-select
-          v-model="datas.showSize"
+          v-model="datas!.showSize"
           placeholder="请选择活动区域"
           style="margin-left: 90px"
         >
@@ -128,7 +135,7 @@
       <!-- 文字高度 -->
       <el-form-item label="文字高度" class="lef">
         <el-slider
-          v-model="datas.textHeight"
+          v-model="datas!.textHeight"
           :max="50"
           :min="24"
           input-size="small"
@@ -148,7 +155,7 @@
       >
         <el-input
           type="number"
-          v-model.number="datas.textSize"
+          v-model.number="datas!.textSize"
           placeholder="请输入文字大小"
           :maxlength="2"
         />
@@ -159,7 +166,7 @@
       <!-- 图片倒角 -->
       <el-form-item label="图片倒角" class="lef borrediu">
         <el-slider
-          v-model="datas.borderRadius"
+          v-model="datas!.borderRadius"
           :max="50"
           input-size="small"
           show-input
@@ -171,7 +178,7 @@
 
       <el-form-item class="lef" label="背景图片">
         <div class="shop-head-pic" style="text-align: center">
-          <img class="home-bg" :src="datas.bgImg" alt="" v-if="datas.bgImg" />
+          <img class="home-bg" :src="datas?.bgImg" alt="" v-if="datas?.bgImg" />
           <div class="shop-head-pic-btn" style="text-align: center">
             <el-button
               @click="showUpload('1')"
@@ -192,7 +199,7 @@
       <el-form-item class="lef" label="背景颜色">
         <!-- 颜色选择器 -->
         <el-color-picker
-          v-model="datas.backgroundColor"
+          v-model="datas!.backgroundColor"
           show-alpha
           class="picke"
           :predefine="predefineColors"
@@ -206,7 +213,7 @@
       <el-form-item class="lef" label="文字颜色">
         <!-- 颜色选择器 -->
         <el-color-picker
-          v-model="datas.textColor"
+          v-model="datas!.textColor"
           show-alpha
           class="picke"
           :predefine="predefineColors"
@@ -216,88 +223,77 @@
     </el-form>
 
     <!-- 上传图片 -->
-    <uploadimg ref="upload" @uploadInformation="uploadInformation" />
+    <uploadimg ref="refUpload" @uploadInformation="uploadInformation" />
   </div>
 </template>
 
-<script>
-import uploadimg from '../../uploadImg' //图片上传
-import vuedraggable from 'vuedraggable' //拖拽组件
+<script lang="ts" setup>
+import { reactive, ref, type PropType } from "vue";
+import uploadimg from "@/components/uploadImg/index.vue"; //图片上传
+import vuedraggable from "vuedraggable"; //拖拽组件
+type ObjectProp = Record<string, any>;
+const props = defineProps({
+  datas: Object as PropType<Partial<ObjectProp>>,
+});
+const refUpload = ref();
 
-export default {
-  name: 'graphicnavigationstyle',
-  props: {
-    datas: Object,
+// const emptyText = ref("");
+const uploadImgDataType = ref(null);
+const predefineColors = reactive([
+  // 颜色选择器预设
+  "#ff4500",
+  "#ff8c00",
+  "#ffd700",
+  "#90ee90",
+  "#00ced1",
+  "#1e90ff",
+  "#c71585",
+  "#409EFF",
+  "#909399",
+  "#C0C4CC",
+  "rgba(255, 69, 0, 0.68)",
+  "rgb(255, 120, 0)",
+  "hsv(51, 100, 98)",
+  "hsva(120, 40, 94, 0.5)",
+  "hsl(181, 100%, 37%)",
+  "hsla(209, 100%, 56%, 0.73)",
+  "#c7158577",
+]);
+const optionsType = reactive([
+  {
+    type: "10",
+    name: "内部链接",
   },
-  data() {
-    return {
-      predefineColors: [
-        // 颜色选择器预设
-        '#ff4500',
-        '#ff8c00',
-        '#ffd700',
-        '#90ee90',
-        '#00ced1',
-        '#1e90ff',
-        '#c71585',
-        '#409EFF',
-        '#909399',
-        '#C0C4CC',
-        'rgba(255, 69, 0, 0.68)',
-        'rgb(255, 120, 0)',
-        'hsv(51, 100, 98)',
-        'hsva(120, 40, 94, 0.5)',
-        'hsl(181, 100%, 37%)',
-        'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577',
-      ],
-      optionsType: [
-        {
-          type: '10',
-          name: '内部链接',
-        },
-        {
-          type: '11',
-          name: '外部链接',
-        },
-      ], // 选择跳转类型
-      emptyText: '',
-      uploadImgDataType: null,
-    }
+  {
+    type: "11",
+    name: "外部链接",
   },
-  created() {
-  },
-  methods: {
-    showUpload(type) {
-      this.uploadImgDataType = type
-      this.$refs.upload.showUpload()
-    },
-    // 提交
-    uploadInformation(res) {
+]);
+const showUpload = (type: any) => {
+  uploadImgDataType.value = type;
+  refUpload.value.showUpload();
+};
+// 提交
+const uploadInformation = (res: any) => {
+  if (uploadImgDataType.value === "0") {
+    props.datas?.imageList.push({
+      src: res,
+      text: "",
+      http: {},
+    });
+  } else if (uploadImgDataType.value === "1") {
+    props.datas!.bgImg = res;
+  }
+};
 
-      if (this.uploadImgDataType === '0') {
-        this.datas.imageList.push({
-          src: res,
-          text: '',
-          http: {},
-        })
-        console.log(this.datas.imageList,33333333333333)
-      } else if (this.uploadImgDataType === '1') {
-        this.datas.bgImg = res
-      }
-    },
-
-    // 清空背景图片
-    clear() {
-      this.datas.bgImg = ''
-    },
-    /* 删除图片列表的图片 */
-    deleteimg(index) {
-      this.datas.imageList.splice(index, 1)
-    },
-  },
-  components: { uploadimg, vuedraggable },
-}
+// 清空背景图片
+const clear = () => {
+  props.datas!.bgImg = "";
+};
+/* 删除图片列表的图片 */
+const deleteimg = (index: string | number) => {
+  props.datas?.imageList.splice(index, 1);
+};
 </script>
 
 <style scoped lang="less">

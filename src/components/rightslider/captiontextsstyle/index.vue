@@ -232,9 +232,9 @@
 import { reactive } from "vue";
 import type { PropType } from "vue";
 import type { FormRules } from "element-plus";
-type CaptionTextProp = Record<string, any>;
+type ObjectProp = Record<string, any>;
 defineProps({
-  datas: Object as PropType<Partial<CaptionTextProp>>,
+  datas: Object as PropType<Partial<ObjectProp>>,
 });
 
 const checkAge = (rule: any, value: any, callback: any) => {

@@ -1,7 +1,7 @@
 <template>
   <div class="investigatestyle">
     <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <h2>{{ datas?.text }}</h2>
 
     <!-- 内容 -->
     <div>
@@ -14,10 +14,10 @@
     </el-from>-->
     <el-form ref="form" :model="datas" label-width="80px">
       <el-form-item label="名称" label-width="40px">
-        <el-input v-model="datas.title" style="width: 87%"></el-input>
+        <el-input v-model="datas!.title" style="width: 87%"></el-input>
       </el-form-item>
       <el-form-item
-        v-for="(item, index) in datas.jsonData"
+        v-for="(item, index) in datas!.jsonData"
         :key="index"
         class="lef"
       >
@@ -61,45 +61,38 @@
     </el-form>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'investigatestyle',
-  props: {
-    datas: Object,
-  },
-  data() {
-    return {
-      selecttext: ['文本', '下拉框', '单选', '多选'],
-      index1: 0,
-    }
-  },
-  mounted() {},
-  methods: {
-    //添加文本
-    addText() {
-      console.log(this.datas.jsonData)
-      var text = {
-        name: '',
-        type: '',
-        value: '',
-        value1: [],
-        value2: '',
-        showPicker: false,
-      }
-      this.datas.jsonData.push(text)
-    },
-    //删除文本
-    deletetext(index) {
-      this.datas.jsonData.splice(index, 1)
-    },
-    //下拉内容改变发生发生事件
-    conChange(index) {
-      this.datas.jsonData[index].value = ''
-      this.datas.jsonData[index].value1 = []
-    },
-  },
-}
+<script lang="ts" setup>
+import { reactive, type PropType } from "vue";
+// import uploadimg from "@/components/uploadImg/index.vue"; //图片上传
+// import vuedraggable from "vuedraggable"; //拖拽组件
+type ObjectProp = Record<string, any>;
+const props = defineProps({
+  datas: Object as PropType<Partial<ObjectProp>>,
+});
+// const index1 = ref(0);
+const selecttext = reactive(["文本", "下拉框", "单选", "多选"]);
+// const refUpload = ref();
+//添加文本
+const addText = () => {
+  const text = {
+    name: "",
+    type: "",
+    value: "",
+    value1: [],
+    value2: "",
+    showPicker: false,
+  };
+  props.datas?.jsonData.push(text);
+};
+//删除文本
+const deletetext = (index: number) => {
+  props.datas?.jsonData.splice(index, 1);
+};
+//下拉内容改变发生发生事件
+const conChange = (index: number) => {
+  props.datas!.jsonData[index].value = "";
+  props.datas!.jsonData[index].value1 = [];
+};
 </script>
 
 <style scoped lang="less">

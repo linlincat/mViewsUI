@@ -1,14 +1,14 @@
 <template>
   <div class="auxiliarysegmentationstyle">
     <!-- 标题 -->
-    <h2>{{ datas.text }}</h2>
+    <h2>{{ datas?.text }}</h2>
 
     <!-- 表单 -->
     <el-form label-width="80px" :model="datas" size="small">
       <!-- 空白高度 -->
       <el-form-item label="空白高度" class="lef">
         <el-slider
-          v-model="datas.blankHeight"
+          v-model="datas!.blankHeight"
           :max="100"
           input-size="small"
           show-input
@@ -34,9 +34,9 @@
                 index - 1 === 0
                   ? 'icon-fuzhukongbai_weixuanzhong'
                   : 'icon-fuzhuxiantiao',
-                datas.segmentationtype === index - 1 ? 'active' : '',
+                datas?.segmentationtype === index - 1 ? 'active' : '',
               ]"
-              @click="datas.segmentationtype = index - 1"
+              @click="datas!.segmentationtype = index - 1"
             />
           </el-tooltip>
         </div>
@@ -46,7 +46,7 @@
 
       <!-- 选择样式 -->
       <el-form-item
-        v-show="datas.segmentationtype === 1"
+        v-show="datas?.segmentationtype === 1"
         class="lef"
         label="选择样式"
       >
@@ -60,18 +60,21 @@
           >
             <i
               class="iconfont"
-              :class="[item.icon, datas.bordertp === item.type ? 'active' : '']"
-              @click="datas.bordertp = item.type"
+              :class="[
+                item.icon,
+                datas?.bordertp === item.type ? 'active' : '',
+              ]"
+              @click="datas!.bordertp = item.type"
             />
           </el-tooltip>
         </div>
       </el-form-item>
 
-      <div v-show="datas.segmentationtype === 1" style="height: 20px" />
+      <div v-show="datas?.segmentationtype === 1" style="height: 20px" />
 
       <!-- 左右边距 -->
       <el-form-item
-        v-show="datas.segmentationtype === 1"
+        v-show="datas?.segmentationtype === 1"
         class="lef"
         label="左右边距"
       >
@@ -89,25 +92,25 @@
                 index - 1 === 0
                   ? 'icon-icon_wubianju'
                   : 'icon-icon_zuoyoubianju',
-                datas.paddType === index - 1 ? 'active' : '',
+                datas?.paddType === index - 1 ? 'active' : '',
               ]"
-              @click="datas.paddType = index - 1"
+              @click="datas!.paddType = index - 1"
             />
           </el-tooltip>
         </div>
       </el-form-item>
 
-      <div v-show="datas.segmentationtype === 1" style="height: 20px" />
+      <div v-show="datas?.segmentationtype === 1" style="height: 20px" />
 
       <!-- 辅助线颜色 -->
       <el-form-item
-        v-show="datas.segmentationtype === 1"
+        v-show="datas?.segmentationtype === 1"
         label="辅助线颜色"
         class="lef aa"
       >
         <!-- 辅助线颜色 -->
         <el-color-picker
-          v-model="datas.auxliarColor"
+          v-model="datas!.auxliarColor"
           show-alpha
           class="picke"
           :predefine="predefineColors"
@@ -118,55 +121,51 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'auxiliarysegmentationstyle',
-  props: {
-    datas: Object,
+<script setup lang="ts">
+import { reactive } from "vue";
+import type { PropType } from "vue";
+type ObjectProp = Record<string, any>;
+defineProps({
+  datas: Object as PropType<Partial<ObjectProp>>,
+});
+const predefineColors = reactive([
+  // 颜色选择器预设
+  "#ff4500",
+  "#ff8c00",
+  "#ffd700",
+  "#90ee90",
+  "#00ced1",
+  "#1e90ff",
+  "#c71585",
+  "#409EFF",
+  "#909399",
+  "#C0C4CC",
+  "rgba(255, 69, 0, 0.68)",
+  "rgb(255, 120, 0)",
+  "hsv(51, 100, 98)",
+  "hsva(120, 40, 94, 0.5)",
+  "hsl(181, 100%, 37%)",
+  "hsla(209, 100%, 56%, 0.73)",
+  "#c7158577",
+]);
+const borderType = reactive([
+  //线类型
+  {
+    icon: "icon-icon_fengexian_shixian",
+    text: "实线",
+    type: "solid",
   },
-  data() {
-    return {
-      predefineColors: [
-        // 颜色选择器预设
-        '#ff4500',
-        '#ff8c00',
-        '#ffd700',
-        '#90ee90',
-        '#00ced1',
-        '#1e90ff',
-        '#c71585',
-        '#409EFF',
-        '#909399',
-        '#C0C4CC',
-        'rgba(255, 69, 0, 0.68)',
-        'rgb(255, 120, 0)',
-        'hsv(51, 100, 98)',
-        'hsva(120, 40, 94, 0.5)',
-        'hsl(181, 100%, 37%)',
-        'hsla(209, 100%, 56%, 0.73)',
-        '#c7158577',
-      ],
-      borderType: [
-        //线类型
-        {
-          icon: 'icon-icon_fengexian_shixian',
-          text: '实线',
-          type: 'solid',
-        },
-        {
-          icon: 'icon-xuxian',
-          text: '虚线',
-          type: 'dashed',
-        },
-        {
-          icon: 'icon-dianxian--',
-          text: '点线',
-          type: 'dotted',
-        },
-      ],
-    }
+  {
+    icon: "icon-xuxian",
+    text: "虚线",
+    type: "dashed",
   },
-}
+  {
+    icon: "icon-dianxian--",
+    text: "点线",
+    type: "dotted",
+  },
+]);
 </script>
 
 <style scoped lang="less">
